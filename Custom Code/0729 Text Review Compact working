@@ -1,0 +1,504 @@
+<!-- ============================================================
+     ULTRA COMPACT TESTIMONIAL - WITH VISIBLE STARS
+     Fully isolated - won't affect any other code
+     ============================================================ -->
+
+<style>
+    /* ============================================================
+       ALL STYLES ARE SCOPED - Will NOT affect other elements
+       ============================================================ */
+    
+    /* Root wrapper - everything inside is isolated */
+    #uct-root {
+        all: initial; /* Resets all inherited styles */
+        display: block;
+        max-width: 750px;
+        width: 100%;
+        margin: 0 auto;
+        padding: 6px 4px;
+        font-family: 'Poppins', Arial, sans-serif;
+        isolation: isolate;
+        position: relative;
+        box-sizing: border-box;
+    }
+
+    /* Reset ALL child elements */
+    #uct-root * {
+        all: revert;
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        font-family: 'Poppins', Arial, sans-serif;
+    }
+
+    /* Container - fixed height to prevent shift */
+    #uct-root .uct-container {
+        background: transparent;
+        padding: 8px 6px;
+        min-height: 55px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        position: relative;
+        transition: opacity 0.3s ease;
+        width: 100%;
+    }
+
+    /* Review line - all inline */
+    #uct-root .uct-review {
+        font-size: 0.92rem !important;
+        line-height: 1.7 !important;
+        color: #1f2a41 !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        flex-wrap: wrap !important;
+        gap: 4px 6px !important;
+        padding: 2px 0 !important;
+        width: 100% !important;
+        text-align: center !important;
+    }
+
+    /* Stars - inline with proper size and color */
+    #uct-root .uct-stars {
+        display: inline-flex !important;
+        gap: 2px !important;
+        align-items: center !important;
+        flex-shrink: 0 !important;
+        font-size: 0.85rem !important;
+        line-height: 1 !important;
+    }
+    
+    #uct-root .uct-stars .uct-star {
+        color: #c9a84c !important;
+        font-size: 0.85rem !important;
+        line-height: 1 !important;
+        display: inline-block !important;
+    }
+    
+    #uct-root .uct-stars .uct-star-empty {
+        color: #dce1e9 !important;
+        font-size: 0.85rem !important;
+        line-height: 1 !important;
+        display: inline-block !important;
+    }
+
+    /* Review text */
+    #uct-root .uct-text {
+        font-style: italic !important;
+        display: inline !important;
+        color: #1f2a41 !important;
+    }
+
+    /* Dash between review and author */
+    #uct-root .uct-dash {
+        color: #dce1e9 !important;
+        font-size: 0.7rem !important;
+        padding: 0 2px !important;
+        display: inline-block !important;
+    }
+
+    /* Author - inline */
+    #uct-root .uct-author {
+        display: inline-flex !important;
+        align-items: center !important;
+        gap: 4px !important;
+        flex-wrap: wrap !important;
+        white-space: nowrap !important;
+    }
+
+    #uct-root .uct-author-name {
+        font-weight: 600 !important;
+        color: #0b1a33 !important;
+        font-size: 0.88rem !important;
+        display: inline !important;
+    }
+
+    #uct-root .uct-author-title {
+        font-weight: 400 !important;
+        color: #6b7f99 !important;
+        font-size: 0.78rem !important;
+        display: inline !important;
+    }
+
+    #uct-root .uct-author-divider {
+        color: #dce1e9 !important;
+        font-size: 0.5rem !important;
+        padding: 0 2px !important;
+        display: inline !important;
+    }
+
+    /* Error / Loading states */
+    #uct-root .uct-error {
+        background: #fef6f6 !important;
+        border: 1px solid #fce8e8 !important;
+        border-radius: 8px !important;
+        padding: 10px 14px !important;
+        color: #a33 !important;
+        text-align: center !important;
+        font-size: 0.85rem !important;
+        width: 100% !important;
+    }
+
+    #uct-root .uct-retry {
+        all: initial !important;
+        background: #1d3563 !important;
+        color: #ffffff !important;
+        border: none !important;
+        padding: 5px 18px !important;
+        border-radius: 20px !important;
+        font-size: 0.75rem !important;
+        cursor: pointer !important;
+        margin-top: 6px !important;
+        font-family: 'Poppins', Arial, sans-serif !important;
+        transition: all 0.2s ease !important;
+        display: inline-block !important;
+    }
+
+    #uct-root .uct-retry:hover {
+        background: #2a4a7a !important;
+    }
+
+    #uct-root .uct-loading {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        gap: 6px !important;
+        color: #6b7f99 !important;
+        font-size: 0.82rem !important;
+        padding: 8px 0 !important;
+        width: 100% !important;
+    }
+
+    #uct-root .uct-spinner {
+        width: 20px !important;
+        height: 20px !important;
+        border: 2px solid #eef2f7 !important;
+        border-top: 2px solid #1d3563 !important;
+        border-radius: 50% !important;
+        animation: uctSpin 0.8s linear infinite !important;
+    }
+
+    @keyframes uctSpin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+
+    /* Fade animation */
+    #uct-root .uct-fade {
+        animation: uctFade 0.5s ease forwards !important;
+    }
+
+    @keyframes uctFade {
+        0% {
+            opacity: 0;
+            transform: translateY(6px);
+        }
+        100% {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* Responsive */
+    @media (max-width: 600px) {
+        #uct-root {
+            padding: 4px 2px !important;
+        }
+        #uct-root .uct-container {
+            padding: 6px 4px !important;
+            min-height: 50px !important;
+        }
+        #uct-root .uct-review {
+            font-size: 0.82rem !important;
+            line-height: 1.5 !important;
+            gap: 3px 4px !important;
+        }
+        #uct-root .uct-stars {
+            font-size: 0.75rem !important;
+        }
+        #uct-root .uct-stars .uct-star,
+        #uct-root .uct-stars .uct-star-empty {
+            font-size: 0.75rem !important;
+        }
+        #uct-root .uct-author-name {
+            font-size: 0.8rem !important;
+        }
+        #uct-root .uct-author-title {
+            font-size: 0.7rem !important;
+        }
+    }
+
+    @media (max-width: 400px) {
+        #uct-root .uct-container {
+            padding: 4px 2px !important;
+            min-height: 45px !important;
+        }
+        #uct-root .uct-review {
+            font-size: 0.78rem !important;
+            line-height: 1.4 !important;
+            gap: 2px 3px !important;
+        }
+        #uct-root .uct-stars {
+            font-size: 0.7rem !important;
+        }
+        #uct-root .uct-stars .uct-star,
+        #uct-root .uct-stars .uct-star-empty {
+            font-size: 0.7rem !important;
+        }
+        #uct-root .uct-author-name {
+            font-size: 0.75rem !important;
+        }
+        #uct-root .uct-author-title {
+            font-size: 0.65rem !important;
+        }
+    }
+</style>
+
+<!-- ============================================================
+     HTML STRUCTURE - ULTRA COMPACT
+     ============================================================ -->
+<div id="uct-root">
+    <div class="uct-container" id="uctContainer">
+        <!-- Content injected here -->
+    </div>
+</div>
+
+<!-- ============================================================
+     JAVASCRIPT - COMPLETELY ISOLATED
+     ============================================================ -->
+<script>
+    (function() {
+        "use strict";
+
+        // ============================================
+        // CONFIGURATION
+        // ============================================
+        const UCT_SHEET_ID = "1geP_5qi9RfTYuwi_e5Oyvchoz0u7TaKGm4NOMqaa90w";
+        const UCT_TAB_NAME = "Text Review";
+        const UCT_AUTOPLAY_DELAY = 5000;
+
+        // ============================================
+        // DOM
+        // ============================================
+        const container = document.getElementById('uctContainer');
+        let reviews = [];
+        let currentIndex = 0;
+        let autoplayInterval = null;
+        let isTransitioning = false;
+
+        // ============================================
+        // HELPER FUNCTIONS
+        // ============================================
+        function shuffleArray(arr) {
+            const shuffled = [...arr];
+            for (let i = shuffled.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+            }
+            return shuffled;
+        }
+
+        // Render stars using Unicode characters (no Font Awesome needed!)
+        function renderStars(rating) {
+            const full = Math.floor(rating);
+            const half = rating - full >= 0.5 ? 1 : 0;
+            const empty = 5 - full - half;
+            let html = '';
+            
+            // Full stars (★)
+            for (let i = 0; i < full; i++) {
+                html += '<span class="uct-star">★</span>';
+            }
+            // Half star (use ★ with gradient or just full star for simplicity)
+            if (half) {
+                html += '<span class="uct-star">★</span>'; // Using full star as fallback
+            }
+            // Empty stars (☆)
+            for (let i = 0; i < empty; i++) {
+                html += '<span class="uct-star-empty">☆</span>';
+            }
+            return html;
+        }
+
+        function escapeHtml(text) {
+            if (!text) return '';
+            const map = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' };
+            return String(text).replace(/[&<>"']/g, m => map[m]);
+        }
+
+        function truncateText(text, maxLength) {
+            if (!text) return '';
+            if (text.length <= maxLength) return text;
+            return text.substring(0, maxLength) + '...';
+        }
+
+        // ============================================
+        // RENDER FUNCTIONS
+        // ============================================
+        function renderReview(index, animate = true) {
+            if (isTransitioning || !reviews.length) return;
+            isTransitioning = true;
+
+            const review = reviews[index];
+            if (!review) {
+                isTransitioning = false;
+                return;
+            }
+
+            const starsHtml = renderStars(review.star);
+            const text = truncateText(review.review, 180);
+            const author = escapeHtml(review.author);
+            const title = review.title ? escapeHtml(review.title) : null;
+
+            // Build author HTML (inline)
+            let authorHtml = `<span class="uct-author-name">${author}</span>`;
+            if (title) {
+                authorHtml += `<span class="uct-author-divider">•</span>`;
+                authorHtml += `<span class="uct-author-title">${title}</span>`;
+            }
+
+            // Everything in one line: Stars + Review + Dash + Author
+            const html = `
+                <div class="uct-review ${animate ? 'uct-fade' : ''}">
+                    <span class="uct-stars">${starsHtml}</span>
+                    <span class="uct-text">“${text}”</span>
+                    <span class="uct-dash">—</span>
+                    <span class="uct-author">${authorHtml}</span>
+                </div>
+            `;
+
+            // Smooth transition
+            if (animate) {
+                container.style.opacity = '0';
+                setTimeout(function() {
+                    container.innerHTML = html;
+                    container.style.opacity = '1';
+                    setTimeout(function() {
+                        isTransitioning = false;
+                    }, 500);
+                }, 150);
+            } else {
+                container.innerHTML = html;
+                setTimeout(function() {
+                    isTransitioning = false;
+                }, 100);
+            }
+        }
+
+        // ============================================
+        // NAVIGATION
+        // ============================================
+        function nextReview() {
+            if (reviews.length === 0 || isTransitioning) return;
+            currentIndex = (currentIndex + 1) % reviews.length;
+            renderReview(currentIndex, true);
+        }
+
+        // ============================================
+        // AUTOPLAY
+        // ============================================
+        function startAutoplay() {
+            if (reviews.length <= 1) return;
+            stopAutoplay();
+            autoplayInterval = setInterval(nextReview, UCT_AUTOPLAY_DELAY);
+        }
+
+        function stopAutoplay() {
+            if (autoplayInterval) {
+                clearInterval(autoplayInterval);
+                autoplayInterval = null;
+            }
+        }
+
+        // ============================================
+        // STATES
+        // ============================================
+        function showError(msg) {
+            container.innerHTML = `
+                <div class="uct-error">
+                    <span style="margin-right:6px;">⚠️</span>
+                    ${msg}
+                    <br>
+                    <button class="uct-retry" onclick="location.reload()">
+                        🔄 Retry
+                    </button>
+                </div>
+            `;
+        }
+
+        function showLoading() {
+            container.innerHTML = `
+                <div class="uct-loading">
+                    <div class="uct-spinner"></div>
+                    <span>Loading reviews...</span>
+                </div>
+            `;
+        }
+
+        // ============================================
+        // FETCH DATA
+        // ============================================
+        function fetchReviews() {
+            showLoading();
+            const url = `https://opensheet.elk.sh/${UCT_SHEET_ID}/${UCT_TAB_NAME}`;
+            
+            fetch(url, { cache: 'no-store' })
+                .then(function(r) { 
+                    if (!r.ok) throw new Error('HTTP ' + r.status); 
+                    return r.json(); 
+                })
+                .then(function(data) {
+                    if (!data || data.length === 0) {
+                        showError('No reviews found.');
+                        return;
+                    }
+
+                    const parsed = data.map(function(row) {
+                        const keys = Object.keys(row);
+                        return {
+                            star: keys.find(function(k) { return /star/i.test(k); }) ? 
+                                parseFloat(row[keys.find(function(k) { return /star/i.test(k); })]) || 5 : 5,
+                            review: keys.find(function(k) { return /review|desc/i.test(k); }) ? 
+                                row[keys.find(function(k) { return /review|desc/i.test(k); })] : 'No review.',
+                            author: keys.find(function(k) { return /client|name|author/i.test(k) && !/title/i.test(k); }) ? 
+                                row[keys.find(function(k) { return /client|name|author/i.test(k) && !/title/i.test(k); })] : 'Anonymous',
+                            title: keys.find(function(k) { return /title/i.test(k) && !/review/i.test(k); }) ? 
+                                row[keys.find(function(k) { return /title/i.test(k) && !/review/i.test(k); })] : ''
+                        };
+                    }).filter(function(r) { return r.review && r.review !== 'No review.'; });
+
+                    if (parsed.length === 0) {
+                        showError('No valid reviews.');
+                        return;
+                    }
+
+                    reviews = shuffleArray(parsed);
+                    currentIndex = 0;
+                    renderReview(0, false);
+                    setTimeout(startAutoplay, 500);
+                })
+                .catch(function(err) { 
+                    console.error('UCT Error:', err);
+                    showError('Connection error. Please try again.');
+                });
+        }
+
+        // ============================================
+        // PAUSE ON HOVER
+        // ============================================
+        container.addEventListener('mouseenter', stopAutoplay);
+        container.addEventListener('mouseleave', startAutoplay);
+
+        // ============================================
+        // INITIALIZE
+        // ============================================
+        fetchReviews();
+
+        // Cleanup
+        window.addEventListener('beforeunload', function() {
+            stopAutoplay();
+        });
+
+    })();
+</script>
