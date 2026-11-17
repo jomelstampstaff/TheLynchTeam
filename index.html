@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Lynch Team · Report Library</title>
+<title>Lynch Team · Report Library · by Jomel Hernandez</title>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -20,12 +20,6 @@
     --accent: #2f7bff;
     --accent-soft: #e3eefc;
     --accent-border: #c9defa;
-    --green: #0b6e41;
-    --green-bg: #e1f7e9;
-    --green-border: #b8e5cd;
-    --amber: #a4510a;
-    --amber-bg: #fff4e0;
-    --amber-border: #fad9a8;
   }
 
   body {
@@ -38,7 +32,6 @@
 
   .main-container { max-width: 1200px; margin: 0 auto; }
 
-  /* ---------- Header ---------- */
   header { margin-bottom: 2rem; }
 
   .brand-row {
@@ -91,7 +84,8 @@
     box-shadow: 0 2px 6px rgba(0,0,0,0.02);
   }
 
-  /* ---------- Stats strip ---------- */
+  .subhead strong { color: var(--text-strong); font-weight: 600; }
+
   .stats-strip {
     display: flex;
     gap: 1rem;
@@ -126,7 +120,6 @@
     font-weight: 600;
   }
 
-  /* ---------- Toolbar ---------- */
   .toolbar {
     display: flex;
     flex-wrap: wrap;
@@ -191,7 +184,6 @@
     box-shadow: 0 2px 8px rgba(47, 123, 255, 0.22);
   }
 
-  /* ---------- Report list ---------- */
   .list {
     display: flex;
     flex-direction: column;
@@ -295,13 +287,13 @@
       <div class="brand-row">
         <div class="brand-mark">LY</div>
         <div class="brand-text">
-          <strong>Lynch Team</strong>
-          <span>Report Library</span>
+          <strong>Lynch Team · Report Library</strong>
+          <span>Prepared by Jomel Hernandez</span>
         </div>
       </div>
       <h1>📚 Report Library</h1>
       <div class="subhead">
-        Every report produced by the Lynch team · one page · live search · newest first
+        Reports prepared by <strong>Jomel Hernandez</strong> for the <strong>Lynch Team</strong> · one page · live search · newest first
       </div>
     </header>
 
@@ -335,7 +327,7 @@
     <div class="empty" id="empty">No reports match your search.</div>
 
     <footer>
-      © <span id="year"></span> Lynch Team · Internal Report Library ·
+      © <span id="year"></span> · Prepared by Jomel Hernandez for the Lynch Team ·
       <a href="https://github.com/">Repository</a>
     </footer>
 
@@ -346,18 +338,11 @@
        ADD REPORTS HERE — one pipe-separated line per report.
        Format:
          "path/to/report.html | Category | YYYY-MM-DD | Title | Description"
-
-       Only `path` and `Title` are required.
-       Category is free text (chips are auto-generated).
-       Date is YYYY-MM-DD (newest sorts first).
-       Description is optional — leave empty but keep the trailing |
        ============================================================ */
     const reports = [
       "reports/workflow-purposes.html | Automations | 2025-01-15 | Workflow purposes & business goals | Exact workflow names grouped by folder with expandable action steps.",
-      // ← Add new reports here, one line each.
     ];
 
-    /* ----- parsing / rendering (no edits needed below) ----- */
     const parsed = reports.map(line => {
       const parts = line.split('|').map(s => s.trim());
       return {
@@ -376,7 +361,7 @@
     const statTotal = document.getElementById('stat-total');
     const statCats  = document.getElementById('stat-cats');
     const statLatest= document.getElementById('stat-latest');
-    const updatedEl = document.getElementById('year');
+    const yearEl    = document.getElementById('year');
 
     let activeTag = 'All';
     const tags = ['All', ...Array.from(new Set(parsed.map(r => r.tag)))];
@@ -394,7 +379,6 @@
 
     function render() {
       const q = searchEl.value.trim().toLowerCase();
-
       const filtered = parsed.filter(r => {
         const matchesTag = activeTag === 'All' || r.tag === activeTag;
         const matchesQ = !q ||
@@ -403,10 +387,8 @@
           r.desc.toLowerCase().includes(q);
         return matchesTag && matchesQ;
       });
-
       listEl.innerHTML = '';
       emptyEl.style.display = filtered.length ? 'none' : 'block';
-
       filtered.forEach(r => {
         const a = document.createElement('a');
         a.className = 'row';
@@ -430,11 +412,10 @@
       }[c]));
     }
 
-    // Header stats
     statTotal.textContent = parsed.length;
     statCats.textContent  = tags.length - 1;
     statLatest.textContent = parsed[0]?.date || '—';
-    updatedEl.textContent = new Date().getFullYear();
+    yearEl.textContent = new Date().getFullYear();
 
     searchEl.addEventListener('input', render);
     renderFilters();
