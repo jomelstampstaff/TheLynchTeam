@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Workflow purposes &amp; business goals · Lynch Team</title>
+    <title>Workflow purposes &amp; business goals · for Lynch Team · by Jomel Hernandez</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -25,6 +25,7 @@
             margin-bottom: 1.5rem;
             font-size: 0.82rem;
             color: #4f658d;
+            flex-wrap: wrap;
         }
 
         .lib-nav a {
@@ -48,6 +49,30 @@
 
         .lib-nav .crumb-sep { color: #b3c2d6; }
         .lib-nav .crumb-current { color: #0e2b4b; font-weight: 500; }
+
+        /* ---------- Author credit ---------- */
+        .author-credit {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.78rem;
+            color: #4f658d;
+            margin-bottom: 0.75rem;
+            padding: 0.4rem 0.85rem;
+            background: #ffffffd0;
+            border: 1px solid #d9e4f0;
+            border-radius: 999px;
+            width: fit-content;
+        }
+
+        .author-credit .dot {
+            width: 6px; height: 6px;
+            border-radius: 50%;
+            background: #2f7bff;
+            box-shadow: 0 0 0 3px rgba(47, 123, 255, 0.15);
+        }
+
+        .author-credit strong { color: #0e2b4b; font-weight: 600; }
 
         /* ---------- Headings ---------- */
         h1 {
@@ -294,6 +319,12 @@
             <span class="crumb-sep">/</span>
             <span class="crumb-current">Workflow purposes &amp; business goals</span>
         </nav>
+
+        <!-- Author credit -->
+        <div class="author-credit">
+            <span class="dot"></span>
+            Prepared by <strong>Jomel Hernandez</strong> for the <strong>Lynch Team</strong>
+        </div>
 
         <h1>🎯 Workflow purposes &amp; business goals</h1>
         <div class="subhead">Exact workflow names from CSV · grouped by folder · expandable action steps</div>
@@ -918,6 +949,7 @@
         </div>
 
         <div class="footer-note">
+            Prepared by <strong>Jomel Hernandez</strong> for the <strong>Lynch Team</strong> ·
             Exact names from “Workflow purposes and business goals” · action steps expandable ·
             <a href="../index.html">← back to the library</a>
         </div>
