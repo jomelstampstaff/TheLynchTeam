@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lynch Team · Report Library</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --bg: #f2f6fc;
+    --panel: #ffffff;
+    --panel-hover: #f9fcff;
+    --border: #e2eaf3;
+    --border-strong: #d9e4f0;
+    --text: #1a2b41;
+    --text-strong: #0b1b32;
+    --muted: #4f658d;
+    --muted-light: #7c8ba0;
+    --accent: #2f7bff;
+    --accent-soft: #e3eefc;
+    --accent-border: #c9defa;
+    --green: #0b6e41;
+    --green-bg: #e1f7e9;
+    --green-border: #b8e5cd;
+    --amber: #a4510a;
+    --amber-bg: #fff4e0;
+    --amber-border: #fad9a8;
+  }
+
+  body {
+    background: var(--bg);
+    font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    padding: 2rem 1.5rem;
+    color: var(--text);
+    line-height: 1.5;
+  }
+
+  .main-container { max-width: 1200px; margin: 0 auto; }
+
+  /* ---------- Header ---------- */
+  header { margin-bottom: 2rem; }
+
+  .brand-row {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .brand-mark {
+    width: 42px; height: 42px;
+    display: grid; place-items: center;
+    border-radius: 11px;
+    background: linear-gradient(135deg, #2f7bff, #1a4fd6);
+    color: #fff;
+    font-weight: 700;
+    font-size: 1.05rem;
+    letter-spacing: -0.04em;
+    box-shadow: 0 4px 12px rgba(47, 123, 255, 0.22);
+  }
+
+  .brand-text { line-height: 1.25; }
+  .brand-text strong { font-size: 1rem; color: var(--text-strong); letter-spacing: -0.01em; }
+  .brand-text span {
+    display: block;
+    font-size: 0.72rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    font-weight: 600;
+  }
+
+  h1 {
+    font-size: 1.9rem;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    margin-bottom: 0.35rem;
+    color: var(--text-strong);
+  }
+
+  .subhead {
+    font-size: 1rem;
+    color: var(--muted);
+    margin-bottom: 0;
+    border-left: 4px solid var(--accent);
+    padding: 0.5rem 1.5rem 0.5rem 1rem;
+    background: #ffffffd0;
+    border-radius: 0 8px 8px 0;
+    width: fit-content;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+  }
+
+  /* ---------- Stats strip ---------- */
+  .stats-strip {
+    display: flex;
+    gap: 1rem;
+    margin: 1.75rem 0 2rem;
+    flex-wrap: wrap;
+  }
+
+  .stat-card {
+    flex: 1;
+    min-width: 140px;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 1rem 1.25rem;
+    box-shadow: 0 2px 6px rgba(0, 20, 40, 0.03);
+  }
+
+  .stat-card strong {
+    display: block;
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--text-strong);
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+  }
+
+  .stat-card span {
+    font-size: 0.72rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-weight: 600;
+  }
+
+  /* ---------- Toolbar ---------- */
+  .toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-bottom: 1.25rem;
+    align-items: center;
+  }
+
+  .search-wrap { position: relative; flex: 1; min-width: 240px; }
+
+  .search-wrap svg {
+    position: absolute;
+    left: 0.9rem; top: 50%;
+    transform: translateY(-50%);
+    width: 17px; height: 17px;
+    stroke: var(--muted);
+    pointer-events: none;
+  }
+
+  .search-wrap input {
+    width: 100%;
+    padding: 0.75rem 1rem 0.75rem 2.6rem;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    color: var(--text);
+    font-size: 0.9rem;
+    outline: none;
+    transition: border-color 0.15s, box-shadow 0.15s;
+    font-family: inherit;
+  }
+
+  .search-wrap input:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(47, 123, 255, 0.14);
+  }
+
+  .search-wrap input::placeholder { color: var(--muted-light); }
+
+  .filters { display: flex; gap: 0.4rem; flex-wrap: wrap; }
+
+  .chip {
+    padding: 0.45rem 0.85rem;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--muted);
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    cursor: pointer;
+    transition: all 0.12s;
+    user-select: none;
+    font-family: inherit;
+  }
+
+  .chip:hover { color: var(--text); border-color: var(--accent-border); }
+
+  .chip.active {
+    color: #fff;
+    background: var(--accent);
+    border-color: var(--accent);
+    box-shadow: 0 2px 8px rgba(47, 123, 255, 0.22);
+  }
+
+  /* ---------- Report list ---------- */
+  .list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+  }
+
+  .row {
+    display: grid;
+    grid-template-columns: auto 1fr auto auto;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 1.25rem;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    text-decoration: none;
+    color: var(--text);
+    transition: background 0.15s, border-color 0.15s, transform 0.15s, box-shadow 0.15s;
+    box-shadow: 0 2px 6px rgba(0, 20, 40, 0.03);
+  }
+
+  .row:hover {
+    background: var(--panel-hover);
+    border-color: var(--accent-border);
+    transform: translateX(3px);
+    box-shadow: 0 6px 16px rgba(0, 20, 40, 0.06);
+  }
+
+  .row-icon { font-size: 1.3rem; line-height: 1; }
+
+  .row-title {
+    font-weight: 600;
+    font-size: 0.98rem;
+    letter-spacing: -0.01em;
+    color: var(--text-strong);
+  }
+
+  .row-desc {
+    font-size: 0.79rem;
+    color: var(--muted);
+    margin-top: 0.15rem;
+    line-height: 1.45;
+  }
+
+  .row-tag {
+    font-size: 0.68rem;
+    font-weight: 600;
+    padding: 0.2rem 0.65rem;
+    border-radius: 30px;
+    background: var(--accent-soft);
+    color: #1d4ed8;
+    border: 1px solid var(--accent-border);
+    white-space: nowrap;
+    letter-spacing: 0.01em;
+  }
+
+  .row-date {
+    font-size: 0.78rem;
+    color: var(--muted);
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+    font-weight: 500;
+  }
+
+  .empty {
+    text-align: center;
+    padding: 4rem 1rem;
+    color: var(--muted);
+    font-size: 0.9rem;
+    display: none;
+  }
+
+  footer {
+    margin-top: 3rem;
+    font-size: 0.78rem;
+    color: var(--muted-light);
+    text-align: center;
+    border-top: 1px solid var(--border-strong);
+    padding-top: 1.5rem;
+  }
+
+  footer a { color: var(--accent); text-decoration: none; font-weight: 600; }
+  footer a:hover { text-decoration: underline; }
+
+  @media (max-width: 640px) {
+    body { padding: 1rem 0.9rem; }
+    h1 { font-size: 1.55rem; }
+    .row { grid-template-columns: auto 1fr auto; gap: 0.75rem; }
+    .row-date { display: none; }
+    .row-desc { display: none; }
+    .stats-strip { gap: 0.5rem; }
+    .stat-card { padding: 0.75rem 0.9rem; }
+    .stat-card strong { font-size: 1.25rem; }
+  }
+</style>
+</head>
+<body>
+  <div class="main-container">
+
+    <header>
+      <div class="brand-row">
+        <div class="brand-mark">LY</div>
+        <div class="brand-text">
+          <strong>Lynch Team</strong>
+          <span>Report Library</span>
+        </div>
+      </div>
+      <h1>📚 Report Library</h1>
+      <div class="subhead">
+        Every report produced by the Lynch team · one page · live search · newest first
+      </div>
+    </header>
+
+    <div class="stats-strip">
+      <div class="stat-card">
+        <strong id="stat-total">0</strong>
+        <span>Reports</span>
+      </div>
+      <div class="stat-card">
+        <strong id="stat-cats">0</strong>
+        <span>Categories</span>
+      </div>
+      <div class="stat-card">
+        <strong id="stat-latest">—</strong>
+        <span>Latest</span>
+      </div>
+    </div>
+
+    <div class="toolbar">
+      <div class="search-wrap">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="8"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+        <input type="text" id="search" placeholder="Search reports by title or category..." autocomplete="off">
+      </div>
+      <div class="filters" id="filters"></div>
+    </div>
+
+    <div class="list" id="list"></div>
+    <div class="empty" id="empty">No reports match your search.</div>
+
+    <footer>
+      © <span id="year"></span> Lynch Team · Internal Report Library ·
+      <a href="https://github.com/">Repository</a>
+    </footer>
+
+  </div>
+
+  <script>
+    /* ============================================================
+       ADD REPORTS HERE — one pipe-separated line per report.
+       Format:
+         "path/to/report.html | Category | YYYY-MM-DD | Title | Description"
+
+       Only `path` and `Title` are required.
+       Category is free text (chips are auto-generated).
+       Date is YYYY-MM-DD (newest sorts first).
+       Description is optional — leave empty but keep the trailing |
+       ============================================================ */
+    const reports = [
+      "reports/workflow-purposes.html | Automations | 2025-01-15 | Workflow purposes & business goals | Exact workflow names grouped by folder with expandable action steps.",
+      // ← Add new reports here, one line each.
+    ];
+
+    /* ----- parsing / rendering (no edits needed below) ----- */
+    const parsed = reports.map(line => {
+      const parts = line.split('|').map(s => s.trim());
+      return {
+        url:   parts[0] || '',
+        tag:   parts[1] || 'Uncategorized',
+        date:  parts[2] || '',
+        title: parts[3] || '(untitled)',
+        desc:  parts[4] || ''
+      };
+    }).filter(r => r.url).sort((a, b) => b.date.localeCompare(a.date));
+
+    const listEl    = document.getElementById('list');
+    const searchEl  = document.getElementById('search');
+    const filtersEl = document.getElementById('filters');
+    const emptyEl   = document.getElementById('empty');
+    const statTotal = document.getElementById('stat-total');
+    const statCats  = document.getElementById('stat-cats');
+    const statLatest= document.getElementById('stat-latest');
+    const updatedEl = document.getElementById('year');
+
+    let activeTag = 'All';
+    const tags = ['All', ...Array.from(new Set(parsed.map(r => r.tag)))];
+
+    function renderFilters() {
+      filtersEl.innerHTML = '';
+      tags.forEach(tag => {
+        const chip = document.createElement('button');
+        chip.className = 'chip' + (tag === activeTag ? ' active' : '');
+        chip.textContent = tag;
+        chip.onclick = () => { activeTag = tag; renderFilters(); render(); };
+        filtersEl.appendChild(chip);
+      });
+    }
+
+    function render() {
+      const q = searchEl.value.trim().toLowerCase();
+
+      const filtered = parsed.filter(r => {
+        const matchesTag = activeTag === 'All' || r.tag === activeTag;
+        const matchesQ = !q ||
+          r.title.toLowerCase().includes(q) ||
+          r.tag.toLowerCase().includes(q) ||
+          r.desc.toLowerCase().includes(q);
+        return matchesTag && matchesQ;
+      });
+
+      listEl.innerHTML = '';
+      emptyEl.style.display = filtered.length ? 'none' : 'block';
+
+      filtered.forEach(r => {
+        const a = document.createElement('a');
+        a.className = 'row';
+        a.href = r.url;
+        a.innerHTML = `
+          <span class="row-icon">📄</span>
+          <div>
+            <div class="row-title">${esc(r.title)}</div>
+            <div class="row-desc">${esc(r.desc || r.url)}</div>
+          </div>
+          <span class="row-tag">${esc(r.tag)}</span>
+          <span class="row-date">${esc(r.date || '—')}</span>
+        `;
+        listEl.appendChild(a);
+      });
+    }
+
+    function esc(s) {
+      return String(s).replace(/[&<>"']/g, c => ({
+        '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+      }[c]));
+    }
+
+    // Header stats
+    statTotal.textContent = parsed.length;
+    statCats.textContent  = tags.length - 1;
+    statLatest.textContent = parsed[0]?.date || '—';
+    updatedEl.textContent = new Date().getFullYear();
+
+    searchEl.addEventListener('input', render);
+    renderFilters();
+    render();
+  </script>
+</body>
+</html>
