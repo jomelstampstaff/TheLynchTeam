@@ -1,0 +1,941 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Workflow purposes &amp; business goals · Lynch Team</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background: #f2f6fc;
+            font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            padding: 2rem 1.5rem;
+            color: #1a2b41;
+            line-height: 1.5;
+        }
+
+        .main-container { max-width: 1600px; margin: 0 auto; }
+
+        /* ---------- Library nav ---------- */
+        .lib-nav {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            margin-bottom: 1.5rem;
+            font-size: 0.82rem;
+            color: #4f658d;
+        }
+
+        .lib-nav a {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            color: #1d4ed8;
+            text-decoration: none;
+            font-weight: 600;
+            padding: 0.35rem 0.75rem;
+            background: #ffffffd0;
+            border: 1px solid #d9e4f0;
+            border-radius: 999px;
+            transition: background 0.12s, border-color 0.12s;
+        }
+
+        .lib-nav a:hover {
+            background: #e3eefc;
+            border-color: #c9defa;
+        }
+
+        .lib-nav .crumb-sep { color: #b3c2d6; }
+        .lib-nav .crumb-current { color: #0e2b4b; font-weight: 500; }
+
+        /* ---------- Headings ---------- */
+        h1 {
+            font-size: 1.9rem;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+            margin-bottom: 0.35rem;
+            color: #0b1b32;
+        }
+
+        .subhead {
+            font-size: 1rem;
+            color: #4f658d;
+            margin-bottom: 2rem;
+            border-left: 4px solid #2f7bff;
+            padding: 0.5rem 1.5rem 0.5rem 1rem;
+            background: #ffffffd0;
+            border-radius: 0 8px 8px 0;
+            width: fit-content;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+        }
+
+        /* ---------- Folder grid ---------- */
+        .folder-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 2.2rem;
+        }
+
+        .folder {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.04), 0 2px 6px rgba(0, 20, 40, 0.04);
+            overflow: hidden;
+            border: 1px solid #e2eaf3;
+            transition: box-shadow 0.15s;
+        }
+
+        .folder:hover {
+            box-shadow: 0 12px 28px rgba(0, 0, 0, 0.06);
+        }
+
+        .folder-header {
+            background: linear-gradient(90deg, #ffffff 0%, #f9fcff 100%);
+            padding: 1.1rem 1.8rem;
+            border-bottom: 1px solid #d9e4f0;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+        }
+
+        .folder-icon { font-size: 1.5rem; line-height: 1; }
+
+        .folder-header h2 {
+            font-size: 1.35rem;
+            font-weight: 600;
+            color: #0e2b4b;
+            letter-spacing: -0.01em;
+        }
+
+        .folder-count {
+            background: #e3eefc;
+            color: #1d4ed8;
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 0.2rem 0.9rem;
+            border-radius: 50px;
+            margin-left: 0.5rem;
+            border: 1px solid #c9defa;
+        }
+
+        .table-wrapper { overflow-x: auto; padding: 0; }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+            min-width: 1100px;
+        }
+
+        th {
+            text-align: left;
+            padding: 0.9rem 1rem 0.7rem 1.5rem;
+            font-weight: 600;
+            font-size: 0.73rem;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+            color: #4f658d;
+            background: #f7faff;
+            border-bottom: 1px solid #d9e4f0;
+            white-space: nowrap;
+        }
+
+        td {
+            padding: 0.9rem 1rem 0.9rem 1.5rem;
+            border-bottom: 1px solid #eef3fa;
+            vertical-align: top;
+            color: #1f3349;
+        }
+
+        tr:last-child td { border-bottom: none; }
+        tr:hover td { background-color: #f9fcff; }
+
+        .name-cell {
+            font-weight: 500;
+            color: #0d2d5a;
+            max-width: 230px;
+            word-break: break-word;
+        }
+
+        .status-badge {
+            display: inline-block;
+            font-size: 0.68rem;
+            font-weight: 600;
+            padding: 0.2rem 0.65rem;
+            border-radius: 30px;
+            text-transform: capitalize;
+            letter-spacing: 0.01em;
+            white-space: nowrap;
+        }
+
+        .status-published {
+            background: #e1f7e9;
+            color: #0b6e41;
+            border: 1px solid #b8e5cd;
+        }
+
+        .status-draft {
+            background: #fff4e0;
+            color: #a4510a;
+            border: 1px solid #fad9a8;
+        }
+
+        .what-cell {
+            max-width: 280px;
+            font-size: 0.8rem;
+            color: #2d4a6b;
+            word-break: break-word;
+        }
+
+        .purpose-cell {
+            max-width: 190px;
+            font-size: 0.8rem;
+            color: #2f4f6f;
+            word-break: break-word;
+        }
+
+        .trigger-cell {
+            max-width: 160px;
+            font-size: 0.78rem;
+            color: #385570;
+            word-break: break-word;
+        }
+
+        .action-count {
+            display: inline-block;
+            background: #eef3fa;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 0.73rem;
+            padding: 0.15rem 0.6rem;
+            text-align: center;
+            color: #1a4b7a;
+            border: 1px solid #cddef2;
+            min-width: 2.2rem;
+        }
+
+        /* Expandable actions */
+        .actions-toggle {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            background: #eef4fc;
+            border: 1px solid #cfdef0;
+            border-radius: 30px;
+            padding: 0.2rem 0.7rem 0.2rem 0.5rem;
+            font-size: 0.72rem;
+            font-weight: 600;
+            color: #1d4b7a;
+            cursor: pointer;
+            user-select: none;
+            transition: background 0.12s, border 0.12s;
+            white-space: nowrap;
+            font-family: inherit;
+        }
+
+        .actions-toggle:hover {
+            background: #e0ebfa;
+            border-color: #b3cceb;
+        }
+
+        .actions-toggle .arrow {
+            display: inline-block;
+            font-size: 0.65rem;
+            transition: transform 0.18s ease;
+        }
+
+        .actions-toggle[aria-expanded="true"] .arrow {
+            transform: rotate(90deg);
+        }
+
+        .actions-detail {
+            display: none;
+            margin-top: 0.55rem;
+            padding: 0.55rem 0.7rem;
+            background: #f7faff;
+            border: 1px solid #e2ecf8;
+            border-radius: 10px;
+            font-size: 0.76rem;
+            color: #2d4a6b;
+            line-height: 1.55;
+            word-break: break-word;
+            max-width: 340px;
+        }
+
+        .actions-detail.open { display: block; }
+
+        .footer-note {
+            margin-top: 2rem;
+            font-size: 0.78rem;
+            color: #7c8ba0;
+            text-align: center;
+            border-top: 1px solid #dae2ec;
+            padding-top: 1.5rem;
+        }
+
+        .footer-note a { color: #2f7bff; text-decoration: none; font-weight: 600; }
+        .footer-note a:hover { text-decoration: underline; }
+
+        @media (max-width: 700px) {
+            body { padding: 1rem 0.8rem; }
+            .folder-header { padding: 1rem 1.2rem; }
+            th, td { padding-left: 1rem; padding-right: 0.7rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="main-container">
+
+        <!-- Back to the library -->
+        <nav class="lib-nav">
+            <a href="../index.html">← Report Library</a>
+            <span class="crumb-sep">/</span>
+            <span class="crumb-current">Workflow purposes &amp; business goals</span>
+        </nav>
+
+        <h1>🎯 Workflow purposes &amp; business goals</h1>
+        <div class="subhead">Exact workflow names from CSV · grouped by folder · expandable action steps</div>
+
+        <div class="folder-grid">
+            <!-- FOLDER: Social Automations -->
+            <div class="folder">
+                <div class="folder-header">
+                    <span class="folder-icon">💬</span>
+                    <h2>Social Automations</h2>
+                    <span class="folder-count">7 workflows</span>
+                </div>
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Status</th>
+                                <th>What it does</th>
+                                <th>Purpose</th>
+                                <th>Trigger(s)</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="name-cell">1. Social DM Automatic Reply</td>
+                                <td><span class="status-badge status-draft">draft</span></td>
+                                <td class="what-cell">When a social-message reply arrives, creates or updates a contact, sends a welcome and follow-up sequence with waits, creates an opportunity, emails, applies tags, and branches based on contact details or timeouts.</td>
+                                <td class="purpose-cell">Social inquiry response and lead nurture</td>
+                                <td class="trigger-cell">Customer Replied</td>
+                                <td>
+                                    <button class="actions-toggle" aria-expanded="false" aria-controls="act-1">
+                                        <span class="arrow">▶</span> 25 actions
+                                    </button>
+                                    <div class="actions-detail" id="act-1">
+                                        Create Contact → Welcome FB Message to Lead → Asking for their information → Wait → MESSENGER → Create Opportunity → Email → Wait → Email → Wait → Add Tag → Add Tag → wait → Add Tag → timeout → Email → Wait → Add Tag → Add Tag → Add Tag → yes → Add Tag → Email is not Empty → Email is Empty → None
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="name-cell">2. Social DM Automatic Reply</td>
+                                <td><span class="status-badge status-draft">draft</span></td>
+                                <td class="what-cell">When a social-message reply arrives, creates or updates a contact, sends a message sequence with waits, creates an opportunity, emails, applies tags, and branches based on email availability.</td>
+                                <td class="purpose-cell">Social inquiry response and lead nurture</td>
+                                <td class="trigger-cell">Customer Replied</td>
+                                <td>
+                                    <button class="actions-toggle" aria-expanded="false" aria-controls="act-2">
+                                        <span class="arrow">▶</span> 25 actions
+                                    </button>
+                                    <div class="actions-detail" id="act-2">
+                                        Create Contact → INSTAGRAM-DM → INSTAGRAM-DM 2 → Wait → INSTAGRAM-DM → Create Opportunity → Email → Wait → Email → Wait → Add Tag → Add Tag → wait → Add Tag → timeout → Email → Wait → Add Tag → Add Tag → Add Tag → yes → Add Tag → Email is Empty → Email is not Empty → None
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="name-cell">Auto Reply - Reference Only AI Conversation (Social 1)</td>
+                                <td><span class="status-badge status-draft">draft</span></td>
+                                <td class="what-cell">When an inbound social message arrives, creates a contact, alerts the team, updates AI handling, creates an opportunity, tags and messages the lead, then branches after a 30-minute wait.</td>
+                                <td class="purpose-cell">Social inbound response and AI-assisted lead routing</td>
+                                <td class="trigger-cell">Incoming from Facebook</td>
+                                <td>
+                                    <button class="actions-toggle" aria-expanded="false" aria-controls="act-3">
+                                        <span class="arrow">▶</span> 18 actions
+                                    </button>
+                                    <div class="actions-detail" id="act-3">
+                                        Create Contact → Internal Notification → Update Conversation AI Bot and Status → Create Opportunity → add pending tag → Send FB Message to Lead → conversation_ai → Add Task to remove tag when replying → Internal Notification to Everyone → No Condition Met → Wait for 30 mins → Internal Notification → Time Out → yes → Add Tag → Branch → Branch → None
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="name-cell">Auto Reply - Reference Only AI Conversation (Social 2)</td>
+                                <td><span class="status-badge status-draft">draft</span></td>
+                                <td class="what-cell">When an inbound social message arrives, creates a contact, alerts the team, updates AI handling, creates an opportunity, tags and messages the lead, then branches after a 30-minute wait.</td>
+                                <td class="purpose-cell">Social inbound response and AI-assisted lead routing</td>
+                                <td class="trigger-cell">Incoming from instagram</td>
+                                <td>
+                                    <button class="actions-toggle" aria-expanded="false" aria-controls="act-4">
+                                        <span class="arrow">▶</span> 18 actions
+                                    </button>
+                                    <div class="actions-detail" id="act-4">
+                                        Create Contact → Internal Notification → Update Conversation AI Bot and Status → Create Opportunity → add pending tag → Send FB Message to Lead → conversation_ai → Add Task to remove tag when replying → Internal Notification to Everyone → No Condition Met → Wait for 30 mins → Internal Notification → Time Out → yes → Add Tag → Branch → Branch → None
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="name-cell">Social Lead Form Automations</td>
+                                <td><span class="status-badge status-draft">draft</span></td>
+                                <td class="what-cell">When a social lead form is submitted, assigns a user, creates or updates an opportunity, adds a tag, waits, sends email, and alerts the team.</td>
+                                <td class="purpose-cell">Paid-social lead capture and follow-up</td>
+                                <td class="trigger-cell">Facebook Lead Form Submitted</td>
+                                <td>
+                                    <button class="actions-toggle" aria-expanded="false" aria-controls="act-5">
+                                        <span class="arrow">▶</span> 7 actions
+                                    </button>
+                                    <div class="actions-detail" id="act-5">
+                                        Assign to user → Create Or Update Opportunity → Add Tag → Wait → Email → Internal Notification → Internal Notification
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="name-cell">Neighborhood Campaign Auto Reply - Reference Only</td>
+                                <td><span class="status-badge status-draft">draft</span></td>
+                                <td class="what-cell">When a campaign reply or lead form submission occurs, assigns a user, messages the lead, applies tags, sends internal alerts, waits, and branches.</td>
+                                <td class="purpose-cell">Campaign inquiry response and lead routing</td>
+                                <td class="trigger-cell">Facebook reply - Keswick Ads | Facebook Lead Form Submitted</td>
+                                <td>
+                                    <button class="actions-toggle" aria-expanded="false" aria-controls="act-6">
+                                        <span class="arrow">▶</span> 15 actions
+                                    </button>
+                                    <div class="actions-detail" id="act-6">
+                                        Assign to user → Send IG Message to Lead → add replied tag → Internal SMS to Assigned User → Internal Notification to Everyone → Internal Notification → Internal Notification → Add Tag → Add Tag → MESSENGER → Wait → Remove Tag → yes → Branch → None
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="name-cell">Recipe - Social Comments + AI Auto Reply Comments Reference</td>
+                                <td><span class="status-badge status-draft">draft</span></td>
+                                <td class="what-cell">When a post receives a comment, sends a response, analyzes comment sentiment, and branches on the result.</td>
+                                <td class="purpose-cell">Social comment engagement and sentiment routing</td>
+                                <td class="trigger-cell">Facebook - Comment(s) On A Post</td>
+                                <td>
+                                    <button class="actions-toggle" aria-expanded="false" aria-controls="act-7">
+                                        <span class="arrow">▶</span> 8 actions
+                                    </button>
+                                    <div class="actions-detail" id="act-7">
+                                        Comment Response → Facebook Interactive Messenger → Respond On Comment → Default Timeout → Analyse comment sentiment → yes → Positive → Negative
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="name-cell">Top 10 Biggest Price Drops Paid Ads</td>
+                                <td><span class="status-badge status-draft">draft</span></td>
+                                <td class="what-cell">When a paid-ad lead form is submitted, adds a tag, waits, and sends a message.</td>
+                                <td class="purpose-cell">Price-drop advertising lead response (inferred from name)</td>
+                                <td class="trigger-cell">Facebook Lead Form Submitted</td>
+                                <td>
+                                    <button class="actions-toggle" aria-expanded="false" aria-controls="act-8">
+                                        <span class="arrow">▶</span> 3 actions
+                                    </button>
+                                    <div class="actions-detail" id="act-8">
+                                        Add Tag → Wait → MESSENGER
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- FOLDER: Overall Automations -->
+            <div class="folder">
+                <div class="folder-header">
+                    <span class="folder-icon">📋</span>
+                    <h2>Overall Automations</h2>
+                    <span class="folder-count">17 workflows</span>
+                </div>
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr><th>Name</th><th>Status</th><th>What it does</th><th>Purpose</th><th>Trigger(s)</th><th>Actions</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="name-cell">1. Contact Information Completeness Check</td>
+                                <td><span class="status-badge status-published">published</span></td>
+                                <td class="what-cell">On contact creation, change, or tag, waits and checks for missing contact details, then sends internal notifications when information is missing.</td>
+                                <td class="purpose-cell">Contact data completeness and list hygiene</td>
+                                <td class="trigger-cell">Contact Tag | Contact Created | Contact Changed</td>
+                                <td>
+                                    <button class="actions-toggle" aria-expanded="false" aria-controls="act-9">
+                                        <span class="arrow">▶</span> 10 actions
+                                    </button>
+                                    <div class="actions-detail" id="act-9">
+                                        Waiting process to check if missing info → Internal Notification → Internal Notification → yes → Waiting process to check if missing info → Missing information → yes → None → Missing information → None
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="name-cell">2. Appointment Reminder to Team and Lead</td>
+                                <td><span class="status-badge status-published">published</span></td>
+                                <td class="what-cell">When an appointment is scheduled, sends internal alerts, then SMS 24 hours before, email 3 hours before, SMS 1 hour before, and post-appointment internal alerts.</td>
+                                <td class="purpose-cell">Appointment reminders and team coordination</td>
+                                <td class="trigger-cell">Appointment</td>
+                                <td>
+                                    <button class="actions-toggle" aria-expanded="false" aria-controls="act-10">
+                                        <span class="arrow">▶</span> 12 actions
+                                    </button>
+                                    <div class="actions-detail" id="act-10">
+                                        Internal Notification → Internal Notification → Wait → 24 Hours before The appointment → 24 Hours before Appointment → SMS → 3 Hour before the appointment → Email - 3hr reminder → SMS - 1hr reminder → Wait 1hr after → Internal Notification → Internal Notification
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="name-cell">4. Stale Opportunity Automation 1</td>
+                                <td><span class="status-badge status-draft">draft</span></td>
+                                <td class="what-cell">When an opportunity is flagged as stale, creates or updates an opportunity; no further steps are listed.</td>
+                                <td class="purpose-cell">Stale-opportunity maintenance (inferred from name)</td>
+                                <td class="trigger-cell">Stale Opportunities</td>
+                                <td>
+                                    <button class="actions-toggle" aria-expanded="false" aria-controls="act-11">
+                                        <span class="arrow">▶</span> 1 action
+                                    </button>
+                                    <div class="actions-detail" id="act-11">
+                                        Create Or Update Opportunity
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="name-cell">4. Stale Opportunity Automation 2</td>
+                                <td><span class="status-badge status-draft">draft</span></td>
+                                <td class="what-cell">When an opportunity is flagged as stale, creates or updates an opportunity; no further steps are listed.</td>
+                                <td class="purpose-cell">Stale-opportunity maintenance (inferred from name)</td>
+                                <td class="trigger-cell">Stale Opportunities</td>
+                                <td>
+                                    <button class="actions-toggle" aria-expanded="false" aria-controls="act-12">
+                                        <span class="arrow">▶</span> 1 action
+                                    </button>
+                                    <div class="actions-detail" id="act-12">
+                                        Create Or Update Opportunity
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="name-cell">6. Birthday Automation</td>
+                                <td><span class="status-badge status-published">published</span></td>
+                                <td class="what-cell">On a birthday reminder event, sends an SMS and email and sends an internal notification.</td>
+                                <td class="purpose-cell">Birthday relationship touchpoint</td>
+                                <td class="trigger-cell">Birthday Reminder</td>
+                                <td>
+                                    <button class="actions-toggle" aria-expanded="false" aria-controls="act-13">
+                                        <span class="arrow">▶</span> 3 actions
+                                    </button>
+                                    <div class="actions-detail" id="act-13">
+                                        SMS → Email → Internal Notification - Need to add the Marketing person email
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="name-cell">Bad Email Contact DND Automation</td>
+                                <td><span class="status-badge status-published">published</span></td>
+                                <td class="what-cell">When either configured contact tag is applied, toggles the contact’s do-not-disturb setting.</td>
+                                <td class="purpose-cell">Suppress messaging for bad-email records (inferred from name)</td>
+                                <td class="trigger-cell">Contact Tag | Contact Tag</td>
+                                <td>
+                                    <button class="actions-toggle" aria-expanded="false" aria-controls="act-14">
+                                        <span class="arrow">▶</span> 1 action
+                                    </button>
+                                    <div class="actions-detail" id="act-14">
+                                        Enable/Disable DND
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="name-cell">Bad Information - Remove Opportunity</td>
+                                <td><span class="status-badge status-published">published</span></td>
+                                <td class="what-cell">When a contact tag is applied, removes the contact’s opportunities from the marketing and listing/closing pipelines.</td>
+                                <td class="purpose-cell">Remove invalid opportunities from pipelines</td>
+                                <td class="trigger-cell">Contact Tag</td>
+                                <td>
+                                    <button class="actions-toggle" aria-expanded="false" aria-controls="act-15">
+                                        <span class="arrow">▶</span> 2 actions
+                                    </button>
+                                    <div class="actions-detail" id="act-15">
+                                        Remove Opportunity in Marketing Pipeline → Remove Opportunity in Listing &amp; Closings pipeline
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="name-cell">Inbound Call/SMS - Internal Notification Automation</td>
+                                <td><span class="status-badge status-published">published</span></td>
+                                <td class="what-cell">When a contact is created or tagged, sends internal notifications and an SMS, with a phone-number check controlling a follow-up branch.</td>
+                                <td class="purpose-cell">Inbound lead alerts and contact checks</td>
+                                <td class="trigger-cell">Contact Created | Contact Tag</td>
+                                <td>
+                                    <button class="actions-toggle" aria-expanded="false" aria-controls="act-16">
+                                        <span class="arrow">▶</span> 6 actions
+                                    </button>
+                                    <div class="actions-detail" id="act-16">
+                                        Internal Notification → SMS → Internal Notification → yes → Phone is Added → None
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="name-cell">Inbound SMS New Contact - Create Opportunity</td>
+                                <td><span class="status-badge status-published">published</span></td>
+                                <td class="what-cell">When a new contact is created, creates an opportunity and sends an internal notification.</td>
+                                <td class="purpose-cell">Inbound lead capture and opportunity creation</td>
+                                <td class="trigger-cell">Contact Created</td>
+                                <td>
+                                    <button class="actions-toggle" aria-expanded="false" aria-controls="act-17">
+                                        <span class="arrow">▶</span> 2 actions
+                                    </button>
+                                    <div class="actions-detail" id="act-17">
+                                        Create Opportunity → Internal Notification
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="name-cell">Email Follow-Up for Past Leads</td>
+                                <td><span class="status-badge status-draft">draft</span></td>
+                                <td class="what-cell">When a pipeline stage or opportunity changes, assigns a user, runs a delayed email sequence, branches on replies, and sends internal notifications.</td>
+                                <td class="purpose-cell">Re-engagement of past leads (inferred from name)</td>
+                                <td class="trigger-cell">Pipeline Stage Changed | Opportunity Changed</td>
+                                <td>
+                                    <button class="actions-toggle" aria-expanded="false" aria-controls="act-18">
+                                        <span class="arrow">▶</span> 35 actions
+                                    </button>
+                                    <div class="actions-detail" id="act-18">
+                                        Assign to user → yes → Wait → Drip Mode → yes → Go To → Drip Mode → yes → Go To → Go To → Drip Mode → Positive → Lead Replied Positive → Not Positive → Not replied → Email 2 → Positive → Not Positive → Not Replied → Email 3 → Positive → Not Positive → Not Replied → Email 1 → Internal Notification → wait → wait → Wait → Internal Notification → wait → wait → timeout → timeout → wait → timeout
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="name-cell">Flat Commission Automation</td>
+                                <td><span class="status-badge status-published">published</span></td>
+                                <td class="what-cell">When an opportunity is created or changed, waits and then updates the opportunity.</td>
+                                <td class="purpose-cell">Flat-commission opportunity handling (inferred from name)</td>
+                                <td class="trigger-cell">Opportunity Created | Opportunity Changed</td>
+                                <td>
+                                    <button class="actions-toggle" aria-expanded="false" aria-controls="act-19">
+                                        <span class="arrow">▶</span> 2 actions
+                                    </button>
+                                    <div class="actions-detail" id="act-19">
+                                        Wait → Update opportunity
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="name-cell">Follow-Up Automation</td>
+                                <td><span class="status-badge status-draft">draft</span></td>
+                                <td class="what-cell">No trigger or actions are listed, so no automated behavior is defined.</td>
+                                <td class="purpose-cell">inferred from name — not built out</td>
+                                <td class="trigger-cell">None</td>
+                                <td>
+                                    <button class="actions-toggle" aria-expanded="false" aria-controls="act-20">
+                                        <span class="arrow">▶</span> 0 actions
+                                    </button>
+                                    <div class="actions-detail" id="act-20">
+                                        None
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="name-cell">Lead Booked an Appointment</td>
+                                <td><span class="status-badge status-draft">draft</span></td>
+                                <td class="what-cell">When a customer books an appointment, assigns a user, sends an email, creates or updates an opportunity, sends internal alerts, and removes the contact from the workflow.</td>
+                                <td class="purpose-cell">Appointment booking and lead routing</td>
+                                <td class="trigger-cell">Customer booked appointment</td>
+                                <td>
+                                    <button class="actions-toggle" aria-expanded="false" aria-controls="act-21">
+                                        <span class="arrow">▶</span> 6 actions
+                                    </button>
+                                    <div class="actions-detail" id="act-21">
+                                        Assign to user → Email → Create Or Update Opportunity → Internal Notification → Internal Notification → Remove from Workflow
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="name-cell">New Leads Automation</td>
+                                <td><span class="status-badge status-draft">draft</span></td>
+                                <td class="what-cell">On survey, form, contact, or message events, creates or updates contacts and opportunities, sends email/SMS, branches on replies or contact matches, applies tags, and alerts the team.</td>
+                                <td class="purpose-cell">Multi-source lead intake, routing, and nurture</td>
+                                <td class="trigger-cell">Survey Submitted | Form Submitted | Contact Changed | Copy (2) of Customer Replied | Customer Replied | Contact Created</td>
+                                <td>
+                                    <button class="actions-toggle" aria-expanded="false" aria-controls="act-22">
+                                        <span class="arrow">▶</span> 28 actions
+                                    </button>
+                                    <div class="actions-detail" id="act-22">
+                                        Create Contact → yes → Email #1 → yes → Update opportunity → Find Contact → Update contact field → Create Opportunity → Branch → SMS → Replied → Internal Notification → Did not replied → Branch → Contact Found → Contact Not Found → None → Internal Notification → Add Tag → Internal Notification → Internal Notification → Wait → Internal Notification → wait → timeout → yes → Branch → None
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="name-cell">Seller Pre-Sale Automation</td>
+                                <td><span class="status-badge status-draft">draft</span></td>
+                                <td class="what-cell">A customer appointment booking triggers the workflow, but no actions are listed; no follow-up behavior is defined.</td>
+                                <td class="purpose-cell">inferred from name — not built out</td>
+                                <td class="trigger-cell">Customer Booked Appointment</td>
+                                <td>
+                                    <button class="actions-toggle" aria-expanded="false" aria-controls="act-23">
+                                        <span class="arrow">▶</span> 0 actions
+                                    </button>
+                                    <div class="actions-detail" id="act-23">
+                                        None
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="name-cell">Stale Opportunities Automation 3</td>
+                                <td><span class="status-badge status-draft">draft</span></td>
+                                <td class="what-cell">When an opportunity is flagged as stale, creates or updates an opportunity; no further steps are listed.</td>
+                                <td class="purpose-cell">Stale-opportunity maintenance (inferred from name)</td>
+                                <td class="trigger-cell">Stale Opportunities</td>
+                                <td>
+                                    <button class="actions-toggle" aria-expanded="false" aria-controls="act-24">
+                                        <span class="arrow">▶</span> 1 action
+                                    </button>
+                                    <div class="actions-detail" id="act-24">
+                                        Create Or Update Opportunity
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="name-cell">Total Commission Becomes Opportunity Value</td>
+                                <td><span class="status-badge status-published">published</span></td>
+                                <td class="what-cell">When an opportunity is created or changed, updates its value using the total-commission action.</td>
+                                <td class="purpose-cell">Keep opportunity value aligned with total commission</td>
+                                <td class="trigger-cell">Opportunity Changed | Opportunity Created</td>
+                                <td>
+                                    <button class="actions-toggle" aria-expanded="false" aria-controls="act-25">
+                                        <span class="arrow">▶</span> 1 action
+                                    </button>
+                                    <div class="actions-detail" id="act-25">
+                                        Total Commission become Opportunity Value
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- FOLDER: Funnels Automation -->
+            <div class="folder">
+                <div class="folder-header">
+                    <span class="folder-icon">🧩</span>
+                    <h2>Funnels Automation</h2>
+                    <span class="folder-count">2 workflows</span>
+                </div>
+                <div class="table-wrapper">
+                    <table>
+                        <thead><tr><th>Name</th><th>Status</th><th>What it does</th><th>Purpose</th><th>Trigger(s)</th><th>Actions</th></tr></thead>
+                        <tbody>
+                            <tr>
+                                <td class="name-cell">Buyer Form Submission - Internal Alert</td>
+                                <td><span class="status-badge status-published">published</span></td>
+                                <td class="what-cell">When a buyer survey is submitted, adds a buyer tag and sends an internal new-buyer-lead notification.</td>
+                                <td class="purpose-cell">Buyer lead intake and internal alert</td>
+                                <td class="trigger-cell">Survey Submitted</td>
+                                <td>
+                                    <button class="actions-toggle" aria-expanded="false" aria-controls="act-26">
+                                        <span class="arrow">▶</span> 2 actions
+                                    </button>
+                                    <div class="actions-detail" id="act-26">
+                                        Add Buyer Tag → New Buyer Lead Internal Notification
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="name-cell">Seller Form Submission - Internal Alert - Create Opportunity</td>
+                                <td><span class="status-badge status-published">published</span></td>
+                                <td class="what-cell">When a seller survey is submitted, adds a seller tag, creates or updates an opportunity, and sends an internal new-seller-lead notification.</td>
+                                <td class="purpose-cell">Seller lead intake and internal alert</td>
+                                <td class="trigger-cell">Survey Submitted</td>
+                                <td>
+                                    <button class="actions-toggle" aria-expanded="false" aria-controls="act-27">
+                                        <span class="arrow">▶</span> 3 actions
+                                    </button>
+                                    <div class="actions-detail" id="act-27">
+                                        Add Seller Tag → Create or update opportunity → New Seller Lead Internal Notification
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- FOLDER: Root -->
+            <div class="folder">
+                <div class="folder-header">
+                    <span class="folder-icon">🌱</span>
+                    <h2>Root</h2>
+                    <span class="folder-count">4 workflows</span>
+                </div>
+                <div class="table-wrapper">
+                    <table>
+                        <thead><tr><th>Name</th><th>Status</th><th>What it does</th><th>Purpose</th><th>Trigger(s)</th><th>Actions</th></tr></thead>
+                        <tbody>
+                            <tr>
+                                <td class="name-cell">Closing Checklist Automation</td>
+                                <td><span class="status-badge status-draft">draft</span></td>
+                                <td class="what-cell">When a pipeline stage changes, adds a note and creates a task.</td>
+                                <td class="purpose-cell">Transaction checklist and task setup</td>
+                                <td class="trigger-cell">Pipeline Stage Changed</td>
+                                <td>
+                                    <button class="actions-toggle" aria-expanded="false" aria-controls="act-28">
+                                        <span class="arrow">▶</span> 2 actions
+                                    </button>
+                                    <div class="actions-detail" id="act-28">
+                                        Note → Add Task
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="name-cell">Form Submitted - New Leads</td>
+                                <td><span class="status-badge status-draft">draft</span></td>
+                                <td class="what-cell">When a form is submitted, creates a contact, creates an opportunity, and adds a tag.</td>
+                                <td class="purpose-cell">New lead intake and pipeline entry</td>
+                                <td class="trigger-cell">Form Submitted</td>
+                                <td>
+                                    <button class="actions-toggle" aria-expanded="false" aria-controls="act-29">
+                                        <span class="arrow">▶</span> 3 actions
+                                    </button>
+                                    <div class="actions-detail" id="act-29">
+                                        Create Contact → Create Opportunity → Add Tag
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="name-cell">Opportunity Tag Automation</td>
+                                <td><span class="status-badge status-published">published</span></td>
+                                <td class="what-cell">When a lead-source tag or contact change occurs, checks for an opportunity, creates one in the new-lead stage if absent, or updates it after a wait.</td>
+                                <td class="purpose-cell">Lead-source opportunity creation and upkeep</td>
+                                <td class="trigger-cell">Contact Created with CallRail Tag | Contact Changed</td>
+                                <td>
+                                    <button class="actions-toggle" aria-expanded="false" aria-controls="act-30">
+                                        <span class="arrow">▶</span> 6 actions
+                                    </button>
+                                    <div class="actions-detail" id="act-30">
+                                        Find opportunity → Create New Opportunity in 'New Lead' Stage → Opportunity Found → Opportunity Not Found → Wait → Update opportunity
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="name-cell">Tag Triggered Task</td>
+                                <td><span class="status-badge status-draft">draft</span></td>
+                                <td class="what-cell">When a contact changes or receives a tag, creates and assigns a task.</td>
+                                <td class="purpose-cell">Tag-based task assignment</td>
+                                <td class="trigger-cell">Contact Changed | Contact Tag | Contact Tag Added | Contact Changed</td>
+                                <td>
+                                    <button class="actions-toggle" aria-expanded="false" aria-controls="act-31">
+                                        <span class="arrow">▶</span> 1 action
+                                    </button>
+                                    <div class="actions-detail" id="act-31">
+                                        Create and Assign Task
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- FOLDER: Pipeline Automation -->
+            <div class="folder">
+                <div class="folder-header">
+                    <span class="folder-icon">🔄</span>
+                    <h2>Pipeline Automation</h2>
+                    <span class="folder-count">2 workflows</span>
+                </div>
+                <div class="table-wrapper">
+                    <table>
+                        <thead><tr><th>Name</th><th>Status</th><th>What it does</th><th>Purpose</th><th>Trigger(s)</th><th>Actions</th></tr></thead>
+                        <tbody>
+                            <tr>
+                                <td class="name-cell">Buyer Opportunity Stage Transfer: Signed to Pending Closing</td>
+                                <td><span class="status-badge status-published">published</span></td>
+                                <td class="what-cell">When a pipeline stage changes, duplicates the signed-agreement buyer opportunity into the pending-closings pipeline.</td>
+                                <td class="purpose-cell">Buyer transaction stage transfer (inferred from name)</td>
+                                <td class="trigger-cell">Pipeline Stage Changed</td>
+                                <td>
+                                    <button class="actions-toggle" aria-expanded="false" aria-controls="act-32">
+                                        <span class="arrow">▶</span> 1 action
+                                    </button>
+                                    <div class="actions-detail" id="act-32">
+                                        Duplicate 'Active Buyers (Signed Agreement)' to 'Buyer - Pending Closings'
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="name-cell">Seller Opportunity Stage Transfer: Under Contract to Active Listings</td>
+                                <td><span class="status-badge status-published">published</span></td>
+                                <td class="what-cell">When a pipeline stage changes, duplicates the under-contract seller opportunity into the active-listings pipeline.</td>
+                                <td class="purpose-cell">Seller transaction stage transfer (inferred from name)</td>
+                                <td class="trigger-cell">Pipeline Stage Changed</td>
+                                <td>
+                                    <button class="actions-toggle" aria-expanded="false" aria-controls="act-33">
+                                        <span class="arrow">▶</span> 1 action
+                                    </button>
+                                    <div class="actions-detail" id="act-33">
+                                        Duplicate Active Seller (Under Contract) to Active Listings
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- FOLDER: External Lead Automation -->
+            <div class="folder">
+                <div class="folder-header">
+                    <span class="folder-icon">⚡</span>
+                    <h2>External Lead Automation</h2>
+                    <span class="folder-count">1 workflow</span>
+                </div>
+                <div class="table-wrapper">
+                    <table>
+                        <thead><tr><th>Name</th><th>Status</th><th>What it does</th><th>Purpose</th><th>Trigger(s)</th><th>Actions</th></tr></thead>
+                        <tbody>
+                            <tr>
+                                <td class="name-cell">Missed Call Task and Notification</td>
+                                <td><span class="status-badge status-published">published</span></td>
+                                <td class="what-cell">When a contact changes or receives a tag, sends an internal notification, waits, and adds a task.</td>
+                                <td class="purpose-cell">Missed-call follow-up task and alert</td>
+                                <td class="trigger-cell">Contact Changed | Contact Tag</td>
+                                <td>
+                                    <button class="actions-toggle" aria-expanded="false" aria-controls="act-34">
+                                        <span class="arrow">▶</span> 3 actions
+                                    </button>
+                                    <div class="actions-detail" id="act-34">
+                                        Internal Notification → Wait → Add task
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-note">
+            Exact names from “Workflow purposes and business goals” · action steps expandable ·
+            <a href="../index.html">← back to the library</a>
+        </div>
+    </div>
+
+    <script>
+        (function() {
+            document.querySelectorAll('.actions-toggle').forEach(function(btn) {
+                btn.addEventListener('click', function() {
+                    const expanded = this.getAttribute('aria-expanded') === 'true';
+                    const targetId = this.getAttribute('aria-controls');
+                    const detail = document.getElementById(targetId);
+                    if (!detail) return;
+                    this.setAttribute('aria-expanded', !expanded);
+                    detail.classList.toggle('open', !expanded);
+                });
+            });
+        })();
+    </script>
+</body>
+</html>
