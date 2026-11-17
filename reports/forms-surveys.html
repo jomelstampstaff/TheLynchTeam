@@ -1,0 +1,839 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forms &amp; Surveys · Lynch Team</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background: #f2f6fc;
+            font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            padding: 1.5rem 1rem;
+            color: #1a2b41;
+            line-height: 1.5;
+        }
+
+        .main-container { max-width: 1600px; margin: 0 auto; }
+
+        /* ---------- Library nav ---------- */
+        .lib-nav {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            margin-bottom: 1.25rem;
+            font-size: 0.82rem;
+            color: #4f658d;
+            flex-wrap: wrap;
+        }
+
+        .lib-nav a {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            color: #1d4ed8;
+            text-decoration: none;
+            font-weight: 600;
+            padding: 0.35rem 0.75rem;
+            background: #ffffffd0;
+            border: 1px solid #d9e4f0;
+            border-radius: 999px;
+            transition: background 0.12s, border-color 0.12s;
+        }
+
+        .lib-nav a:hover { background: #e3eefc; border-color: #c9defa; }
+        .lib-nav .crumb-sep { color: #b3c2d6; }
+        .lib-nav .crumb-current { color: #0e2b4b; font-weight: 500; }
+
+        /* ---------- Attribution bar ---------- */
+        .attribution {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1rem;
+            padding: 0.85rem 1.1rem;
+            background: #ffffff;
+            border: 1px solid #e2eaf3;
+            border-radius: 14px;
+            box-shadow: 0 2px 6px rgba(0, 20, 40, 0.03);
+            margin-bottom: 1.5rem;
+        }
+
+        .attr-side {
+            display: flex;
+            align-items: center;
+            gap: 0.65rem;
+            font-size: 0.82rem;
+            color: #4f658d;
+        }
+
+        .attr-side strong { color: #0e2b4b; font-weight: 600; }
+        .attr-side a { color: #1d4ed8; text-decoration: none; font-weight: 600; }
+        .attr-side a:hover { text-decoration: underline; }
+
+        .attr-avatar {
+            width: 34px; height: 34px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #e2eaf3;
+            background: #eef3fa;
+        }
+
+        .attr-logo {
+            width: 34px; height: 34px;
+            object-fit: contain;
+            border-radius: 8px;
+            background: #f7faff;
+            padding: 3px;
+            border: 1px solid #e2eaf3;
+        }
+
+        .attr-divider { color: #b3c2d6; font-size: 0.9rem; }
+
+        /* ---------- Header ---------- */
+        .header-section { margin-bottom: 1.75rem; }
+
+        .header-top {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: baseline;
+            justify-content: space-between;
+            gap: 0.75rem;
+            margin-bottom: 0.5rem;
+        }
+
+        h1 {
+            font-size: 1.9rem;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+            color: #0b1b32;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .badge-count {
+            background: #e3eefc;
+            color: #1d4ed8;
+            font-size: 0.8rem;
+            font-weight: 600;
+            padding: 0.25rem 0.9rem;
+            border-radius: 50px;
+            border: 1px solid #c9defa;
+        }
+
+        .subhead {
+            font-size: 0.95rem;
+            color: #4f658d;
+            border-left: 4px solid #2f7bff;
+            padding: 0.4rem 1.5rem 0.4rem 1rem;
+            background: #ffffffd0;
+            border-radius: 0 8px 8px 0;
+            width: fit-content;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+        }
+
+        /* ---------- Controls ---------- */
+        .controls-bar {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 0.75rem;
+            margin: 1.5rem 0 1.25rem;
+            background: white;
+            padding: 1rem 1.25rem;
+            border-radius: 16px;
+            border: 1px solid #e2eaf3;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
+        }
+
+        .search-wrapper {
+            flex: 1 1 240px;
+            position: relative;
+            min-width: 180px;
+        }
+
+        .search-wrapper input {
+            width: 100%;
+            padding: 0.6rem 0.9rem 0.6rem 2.4rem;
+            border: 1px solid #d0ddea;
+            border-radius: 12px;
+            font-size: 0.85rem;
+            font-family: inherit;
+            background: #f9fcff;
+            transition: border 0.15s, box-shadow 0.15s;
+            color: #1a2b41;
+        }
+
+        .search-wrapper input:focus {
+            outline: none;
+            border-color: #2f7bff;
+            box-shadow: 0 0 0 3px rgba(47, 123, 255, 0.12);
+            background: #fff;
+        }
+
+        .search-wrapper .search-icon {
+            position: absolute;
+            left: 0.75rem;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1rem;
+            color: #8ba0bb;
+            pointer-events: none;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .filter-group label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+            color: #5b6e8c;
+            margin-right: 0.15rem;
+        }
+
+        .filter-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+            background: #f0f5fc;
+            border: 1px solid #d0ddea;
+            border-radius: 30px;
+            padding: 0.3rem 0.8rem;
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: #2d4a6b;
+            cursor: pointer;
+            transition: all 0.15s;
+            user-select: none;
+        }
+
+        .filter-chip:hover { background: #e3eefc; border-color: #b8d0ea; }
+
+        .filter-chip.active {
+            background: #2f7bff;
+            color: white;
+            border-color: #2f7bff;
+        }
+
+        .filter-chip .count {
+            background: rgba(0,0,0,0.08);
+            border-radius: 20px;
+            padding: 0.05rem 0.45rem;
+            font-size: 0.65rem;
+            font-weight: 700;
+            min-width: 1.2rem;
+            text-align: center;
+        }
+
+        .filter-chip.active .count {
+            background: rgba(255,255,255,0.25);
+            color: white;
+        }
+
+        .reset-btn {
+            background: transparent;
+            border: 1px solid #d0ddea;
+            border-radius: 30px;
+            padding: 0.35rem 1rem;
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: #5b6e8c;
+            cursor: pointer;
+            transition: all 0.15s;
+            font-family: inherit;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+            white-space: nowrap;
+        }
+
+        .reset-btn:hover { background: #eef4fc; border-color: #b8d0ea; color: #1a4b7a; }
+
+        /* ---------- Table ---------- */
+        .table-container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.04), 0 2px 6px rgba(0, 20, 40, 0.04);
+            border: 1px solid #e2eaf3;
+            overflow: hidden;
+        }
+
+        .table-wrapper { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.82rem;
+            min-width: 1050px;
+        }
+
+        th {
+            text-align: left;
+            padding: 0.85rem 0.9rem 0.65rem 1.1rem;
+            font-weight: 600;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+            color: #4f658d;
+            background: #f7faff;
+            border-bottom: 1px solid #d9e4f0;
+            white-space: nowrap;
+            position: sticky;
+            top: 0;
+            z-index: 2;
+        }
+
+        td {
+            padding: 0.85rem 0.9rem 0.85rem 1.1rem;
+            border-bottom: 1px solid #eef3fa;
+            vertical-align: top;
+            color: #1f3349;
+        }
+
+        tbody tr:last-child td { border-bottom: none; }
+        tbody tr:hover td { background-color: #f9fcff; }
+
+        .name-cell { font-weight: 500; color: #0d2d5a; max-width: 210px; word-break: break-word; }
+
+        .type-badge {
+            display: inline-block;
+            font-size: 0.68rem;
+            font-weight: 600;
+            padding: 0.2rem 0.7rem;
+            border-radius: 30px;
+            text-transform: uppercase;
+            letter-spacing: 0.02em;
+            white-space: nowrap;
+        }
+
+        .type-form { background: #e4f0fe; color: #1a4e9b; border: 1px solid #b8d4f5; }
+        .type-survey { background: #f3e8ff; color: #5e2e9e; border: 1px solid #d8c0f0; }
+
+        .responses-cell { text-align: center; font-weight: 600; font-size: 0.85rem; }
+        .responses-zero { color: #a0b0c4; }
+        .responses-positive { color: #0b6e41; }
+
+        .date-cell { font-size: 0.75rem; color: #4f658d; white-space: nowrap; }
+        .attach-cell { max-width: 200px; font-size: 0.75rem; color: #2d4a6b; word-break: break-word; }
+        .attach-none { color: #a0b0c4; font-style: italic; }
+
+        .how-badge {
+            display: inline-block;
+            font-size: 0.68rem;
+            font-weight: 500;
+            padding: 0.15rem 0.55rem;
+            border-radius: 30px;
+            white-space: nowrap;
+        }
+
+        .how-confirmed { background: #e1f7e9; color: #0b6e41; border: 1px solid #b8e5cd; }
+        .how-not-verifiable { background: #fff4e0; color: #a4510a; border: 1px solid #fad9a8; }
+        .how-none { background: #f1f4f9; color: #6b7e99; border: 1px solid #d5deea; }
+
+        .notes-cell {
+            font-size: 0.73rem;
+            color: #4f658d;
+            max-width: 260px;
+            word-break: break-word;
+            line-height: 1.5;
+        }
+
+        .expandable-notes { position: relative; }
+
+        .notes-preview {
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .notes-preview.expanded {
+            -webkit-line-clamp: unset;
+            display: block;
+        }
+
+        .notes-toggle {
+            background: none;
+            border: none;
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: #2f7bff;
+            cursor: pointer;
+            padding: 0;
+            margin-top: 0.2rem;
+            font-family: inherit;
+        }
+
+        .notes-toggle:hover { text-decoration: underline; }
+
+        .empty-state {
+            display: none;
+            padding: 3rem 1.5rem;
+            text-align: center;
+            color: #7c8ba0;
+            font-size: 0.9rem;
+        }
+
+        .empty-state.visible { display: block; }
+        .empty-state .emoji { font-size: 2.5rem; display: block; margin-bottom: 0.75rem; opacity: 0.6; }
+
+        .row-info {
+            padding: 0.7rem 1.5rem;
+            font-size: 0.75rem;
+            color: #7c8ba0;
+            border-top: 1px solid #eef3fa;
+            background: #fafcff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .row-info .highlight { font-weight: 600; color: #1d4b7a; }
+
+        .footer-note {
+            margin-top: 1.5rem;
+            font-size: 0.75rem;
+            color: #8ba0bb;
+            text-align: center;
+            line-height: 1.7;
+        }
+
+        .footer-note a { color: #2f7bff; text-decoration: none; font-weight: 600; }
+        .footer-note a:hover { text-decoration: underline; }
+
+        @media (max-width: 700px) {
+            body { padding: 1rem 0.6rem; }
+            h1 { font-size: 1.5rem; }
+            .controls-bar { padding: 0.8rem 1rem; gap: 0.6rem; }
+            .filter-chip { font-size: 0.7rem; padding: 0.25rem 0.65rem; }
+            .filter-group label { font-size: 0.7rem; }
+            th, td { padding-left: 0.75rem; padding-right: 0.6rem; }
+            .row-info { padding: 0.6rem 1rem; font-size: 0.7rem; }
+            .attribution { flex-direction: column; align-items: flex-start; }
+        }
+
+        @media (min-width: 901px) {
+            th:first-child, td:first-child {
+                position: sticky;
+                left: 0;
+                z-index: 1;
+                background: white;
+                box-shadow: 2px 0 6px rgba(0,0,0,0.03);
+            }
+            th:first-child { z-index: 3; background: #f7faff; }
+            tbody tr:hover td:first-child { background: #f9fcff; }
+        }
+    </style>
+</head>
+<body>
+    <div class="main-container">
+
+        <nav class="lib-nav">
+            <a href="../index.html">← Report Library</a>
+            <span class="crumb-sep">/</span>
+            <span class="crumb-current">Forms &amp; Surveys</span>
+        </nav>
+
+        <!-- Attribution: produced by Jomel, for The Lynch Team -->
+        <div class="attribution">
+            <div class="attr-side">
+                <img class="attr-avatar" src="../jomel.png" alt="Jomel Hernandez">
+                <span>Produced by <a href="https://www.linkedin.com/in/jomel-hernandez-79330814a/" target="_blank" rel="noopener"><strong>Jomel Hernandez</strong></a></span>
+            </div>
+            <span class="attr-divider">for</span>
+            <div class="attr-side">
+                <img class="attr-logo" src="https://files.leadconnectorhq.com/file/6aeb5379fb31f444f2263228/the-lynch-team-icon.png" alt="The Lynch Team logo">
+                <span>Prepared for <a href="https://thelynchteam.com" target="_blank" rel="noopener"><strong>The Lynch Team</strong></a></span>
+            </div>
+        </div>
+
+        <!-- Header -->
+        <div class="header-section">
+            <div class="header-top">
+                <h1>📋 Forms &amp; Surveys <span class="badge-count" id="totalCount">13</span></h1>
+            </div>
+            <div class="subhead">Consolidated view · filter by type, search by name, expand notes</div>
+        </div>
+
+        <!-- Controls -->
+        <div class="controls-bar">
+            <div class="search-wrapper">
+                <span class="search-icon">🔍</span>
+                <input type="text" id="searchInput" placeholder="Search by name, folder, attachment..." autocomplete="off">
+            </div>
+            <div class="filter-group" id="typeFilters">
+                <label>Type</label>
+                <span class="filter-chip active" data-type="all">All <span class="count" id="countAll">13</span></span>
+                <span class="filter-chip" data-type="Form">Form <span class="count" id="countForm">0</span></span>
+                <span class="filter-chip" data-type="Survey">Survey <span class="count" id="countSurvey">0</span></span>
+            </div>
+            <button class="reset-btn" id="resetBtn">✕ Reset</button>
+        </div>
+
+        <!-- Table -->
+        <div class="table-container">
+            <div class="table-wrapper">
+                <table id="formsTable">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Type</th>
+                            <th>Responses</th>
+                            <th>Created</th>
+                            <th>Last Updated</th>
+                            <th>Attached To</th>
+                            <th>How Determined</th>
+                            <th>Notes</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody">
+                        <!-- Rows injected by JS -->
+                    </tbody>
+                </table>
+                <div class="empty-state" id="emptyState">
+                    <span class="emoji">🔎</span>
+                    No forms or surveys match your filters.
+                </div>
+            </div>
+            <div class="row-info">
+                <span id="rowInfo">Showing <span class="highlight" id="visibleCount">13</span> of <span class="highlight" id="totalRows">13</span> entries</span>
+                <span style="font-size:0.7rem; color:#a0b0c4;">Click a note to expand · Click chips to filter</span>
+            </div>
+        </div>
+
+        <div class="footer-note">
+            Produced by <a href="https://www.linkedin.com/in/jomel-hernandez-79330814a/" target="_blank" rel="noopener">Jomel Hernandez</a>
+            for <a href="https://thelynchteam.com" target="_blank" rel="noopener">The Lynch Team</a>
+            · <a href="../index.html">← back to the library</a>
+            <br>Data from “Forms &amp; Surveys Consolidated” · status preserved from source
+        </div>
+    </div>
+
+    <script>
+        // ---- DATA ----
+        const formsData = [
+            {
+                type: "Form",
+                name: "Sign Up for SMS Updates",
+                folder: "None",
+                responses: 3,
+                created: "2025-07-17",
+                updated: "2026-11-09",
+                attachedTo: "Form Submitted - New Leads; New Leads Automations",
+                attachmentTypes: "workflow trigger",
+                howDetermined: "Confirmed",
+                notes: "Analytics response total for 2025-07-08 through 2026-11-17 inclusive: 3. Recent sample checked: 0 submission(s)."
+            },
+            {
+                type: "Form",
+                name: "Short Sale Form",
+                folder: "None",
+                responses: 0,
+                created: "2026-06-04",
+                updated: "2026-06-25",
+                attachedTo: "None found in checked sources",
+                attachmentTypes: "none found in checked workflow/email sources",
+                howDetermined: "None found",
+                notes: "Analytics response total for 2025-07-08 through 2026-11-17 inclusive: 0. Recent sample checked: 0 submission(s). No attachment found in checked workflows or email campaigns; funnel/site placement is not verifiable."
+            },
+            {
+                type: "Form",
+                name: "Update my Contact Information",
+                folder: "None",
+                responses: 0,
+                created: "2025-12-02",
+                updated: "2025-12-02",
+                attachedTo: "None found in checked sources",
+                attachmentTypes: "none found in checked workflow/email sources",
+                howDetermined: "None found",
+                notes: "Analytics response total for 2025-07-08 through 2026-11-17 inclusive: 0. Recent sample checked: 0 submission(s). No attachment found in checked workflows or email campaigns; funnel/site placement is not verifiable."
+            },
+            {
+                type: "Form",
+                name: "Quick Form",
+                folder: "None",
+                responses: 0,
+                created: "2025-08-04",
+                updated: "2025-08-04",
+                attachedTo: "New Leads Automations",
+                attachmentTypes: "workflow trigger",
+                howDetermined: "Confirmed",
+                notes: "Analytics response total for 2025-07-08 through 2026-11-17 inclusive: 0. Recent sample checked: 0 submission(s)."
+            },
+            {
+                type: "Survey",
+                name: "SHORT SALE FORM*",
+                folder: "None",
+                responses: 0,
+                created: "2026-11-12",
+                updated: "2026-11-17",
+                attachedTo: "Builder preview source (not confirmed as a published page)",
+                attachmentTypes: "website page",
+                howDetermined: "Not verifiable — submission source only",
+                notes: "Analytics response total for 2025-07-08 through 2026-11-17 inclusive: 0. Recent sample checked: 1 submission(s). A recent response referenced preview-source metadata; no published page was verified. No attachment found in checked workflows or email campaigns; funnel/site placement is not verifiable."
+            },
+            {
+                type: "Survey",
+                name: "SELLER FORM*",
+                folder: "None",
+                responses: 5,
+                created: "2026-07-30",
+                updated: "2026-11-13",
+                attachedTo: "Seller Form Submission - Internal Email - Create Opportunity; https://thelynchteam.com/im-selling",
+                attachmentTypes: "workflow trigger; website page",
+                howDetermined: "Confirmed; Not verifiable — URL inferred from 1 recent submission",
+                notes: "Analytics response total for 2025-07-08 through 2026-11-17 inclusive: 5. Recent sample checked: 1 submission(s). Page URL is inferred from one recent submission; live placement/status is unverified."
+            },
+            {
+                type: "Survey",
+                name: "BUYER FORM*",
+                folder: "None",
+                responses: 2,
+                created: "2026-07-29",
+                updated: "2026-08-28",
+                attachedTo: "Buyer Form Submission - Internal Email",
+                attachmentTypes: "workflow trigger",
+                howDetermined: "Confirmed",
+                notes: "Analytics response total for 2025-07-08 through 2026-11-17 inclusive: 2. Recent sample checked: 0 submission(s)."
+            },
+            {
+                type: "Survey",
+                name: "Multiple Offer Survey",
+                folder: "None",
+                responses: 0,
+                created: "2026-07-30",
+                updated: "2026-08-03",
+                attachedTo: "None found in checked sources",
+                attachmentTypes: "none found in checked workflow/email sources",
+                howDetermined: "None found",
+                notes: "Analytics response total for 2025-07-08 through 2026-11-17 inclusive: 0. Recent sample checked: 0 submission(s). No attachment found in checked workflows or email campaigns; funnel/site placement is not verifiable."
+            },
+            {
+                type: "Survey",
+                name: "Multiple Cash Offer Intake Form",
+                folder: "None",
+                responses: 0,
+                created: "2026-07-29",
+                updated: "2026-07-29",
+                attachedTo: "None found in checked sources",
+                attachmentTypes: "none found in checked workflow/email sources",
+                howDetermined: "None found",
+                notes: "Analytics response total for 2025-07-08 through 2026-11-17 inclusive: 0. Recent sample checked: 0 submission(s). No attachment found in checked workflows or email campaigns; funnel/site placement is not verifiable."
+            },
+            {
+                type: "Survey",
+                name: "SELLER LEAD SURVEY",
+                folder: "None",
+                responses: 4,
+                created: "2025-07-08",
+                updated: "2026-07-29",
+                attachedTo: "New Leads Automations",
+                attachmentTypes: "workflow trigger",
+                howDetermined: "Confirmed",
+                notes: "Analytics response total for 2025-07-08 through 2026-11-17 inclusive: 4. Recent sample checked: 0 submission(s)."
+            },
+            {
+                type: "Survey",
+                name: "I'm Buying Survey",
+                folder: "None",
+                responses: 2,
+                created: "2025-07-23",
+                updated: "2026-07-27",
+                attachedTo: "New Leads Automations",
+                attachmentTypes: "workflow trigger",
+                howDetermined: "Confirmed",
+                notes: "Analytics response total for 2025-07-08 through 2026-11-17 inclusive: 2. Recent sample checked: 0 submission(s)."
+            },
+            {
+                type: "Survey",
+                name: "Short Sale",
+                folder: "None",
+                responses: 0,
+                created: "2026-06-04",
+                updated: "2026-06-08",
+                attachedTo: "None found in checked sources",
+                attachmentTypes: "none found in checked workflow/email sources",
+                howDetermined: "None found",
+                notes: "Analytics response total for 2025-07-08 through 2026-11-17 inclusive: 0. Recent sample checked: 0 submission(s). No attachment found in checked workflows or email campaigns; funnel/site placement is not verifiable."
+            },
+            {
+                type: "Survey",
+                name: "General Website Lead Form",
+                folder: "None",
+                responses: 2,
+                created: "2025-08-04",
+                updated: "2026-01-09",
+                attachedTo: "New Leads Automations",
+                attachmentTypes: "workflow trigger",
+                howDetermined: "Confirmed",
+                notes: "Analytics response total for 2025-07-08 through 2026-11-17 inclusive: 2. Recent sample checked: 0 submission(s)."
+            }
+        ];
+
+        // ---- STATE ----
+        let activeType = "all";
+        let searchQuery = "";
+
+        // ---- DOM ----
+        const tableBody = document.getElementById("tableBody");
+        const searchInput = document.getElementById("searchInput");
+        const typeFilters = document.getElementById("typeFilters");
+        const resetBtn = document.getElementById("resetBtn");
+        const visibleCount = document.getElementById("visibleCount");
+        const totalRows = document.getElementById("totalRows");
+        const emptyState = document.getElementById("emptyState");
+        const totalCount = document.getElementById("totalCount");
+
+        function updateCounts() {
+            const forms = formsData.filter(d => d.type === "Form").length;
+            const surveys = formsData.filter(d => d.type === "Survey").length;
+            document.getElementById("countAll").textContent = formsData.length;
+            document.getElementById("countForm").textContent = forms;
+            document.getElementById("countSurvey").textContent = surveys;
+            totalCount.textContent = formsData.length;
+            totalRows.textContent = formsData.length;
+        }
+
+        function escapeHtml(str) {
+            if (!str) return "";
+            return String(str).replace(/[&<>"]/g, function(m) {
+                if (m === "&") return "&amp;";
+                if (m === "<") return "&lt;";
+                if (m === ">") return "&gt;";
+                if (m === '"') return "&quot;";
+                return m;
+            });
+        }
+
+        function renderTable() {
+            const query = searchQuery.trim().toLowerCase();
+
+            const filtered = formsData.filter(item => {
+                if (activeType !== "all" && item.type !== activeType) return false;
+                if (query) {
+                    const haystack = [
+                        item.name, item.type, item.folder, item.attachedTo,
+                        item.attachmentTypes, item.howDetermined, item.notes
+                    ].join(" ").toLowerCase();
+                    if (!haystack.includes(query)) return false;
+                }
+                return true;
+            });
+
+            visibleCount.textContent = filtered.length;
+
+            if (filtered.length === 0) {
+                tableBody.innerHTML = "";
+                emptyState.classList.add("visible");
+                return;
+            }
+
+            emptyState.classList.remove("visible");
+
+            let html = "";
+            filtered.forEach((item, idx) => {
+                const responseClass = item.responses > 0 ? "responses-positive" : "responses-zero";
+                const typeClass = item.type === "Form" ? "type-form" : "type-survey";
+
+                let howClass = "how-none";
+                const hd = (item.howDetermined || "").toLowerCase();
+                if (hd.includes("confirmed")) {
+                    howClass = "how-confirmed";
+                } else if (hd.includes("not verifiable")) {
+                    howClass = "how-not-verifiable";
+                }
+
+                const attachedDisplay = item.attachedTo === "None found in checked sources" || item.attachedTo === "None"
+                    ? `<span class="attach-none">${escapeHtml(item.attachedTo)}</span>`
+                    : escapeHtml(item.attachedTo);
+
+                const attachedTruncated = item.attachedTo.length > 80
+                    ? escapeHtml(item.attachedTo.substring(0, 80)) + "…"
+                    : attachedDisplay;
+
+                const notesPreview = item.notes.length > 90
+                    ? escapeHtml(item.notes.substring(0, 90)) + "…"
+                    : escapeHtml(item.notes);
+
+                const notesId = `notes-${idx}`;
+
+                html += `
+                    <tr data-type="${item.type}">
+                        <td class="name-cell">${escapeHtml(item.name)}</td>
+                        <td><span class="type-badge ${typeClass}">${escapeHtml(item.type)}</span></td>
+                        <td class="responses-cell ${responseClass}">${item.responses}</td>
+                        <td class="date-cell">${escapeHtml(item.created)}</td>
+                        <td class="date-cell">${escapeHtml(item.updated)}</td>
+                        <td class="attach-cell">${attachedTruncated}</td>
+                        <td><span class="how-badge ${howClass}">${escapeHtml(item.howDetermined)}</span></td>
+                        <td class="notes-cell expandable-notes">
+                            <div class="notes-preview" id="${notesId}">${notesPreview}</div>
+                            ${item.notes.length > 90 ? `<button class="notes-toggle" data-target="${notesId}">Show more</button>` : ""}
+                        </td>
+                    </tr>
+                `;
+            });
+
+            tableBody.innerHTML = html;
+
+            document.querySelectorAll(".notes-toggle").forEach(btn => {
+                btn.addEventListener("click", function(e) {
+                    e.stopPropagation();
+                    const targetId = this.getAttribute("data-target");
+                    const target = document.getElementById(targetId);
+                    if (!target) return;
+
+                    if (target.classList.contains("expanded")) {
+                        target.classList.remove("expanded");
+                        this.textContent = "Show more";
+                    } else {
+                        target.classList.add("expanded");
+                        this.textContent = "Show less";
+                    }
+                });
+            });
+        }
+
+        searchInput.addEventListener("input", function() {
+            searchQuery = this.value;
+            renderTable();
+        });
+
+        typeFilters.addEventListener("click", function(e) {
+            const chip = e.target.closest(".filter-chip");
+            if (!chip) return;
+
+            const type = chip.getAttribute("data-type");
+            activeType = type;
+
+            typeFilters.querySelectorAll(".filter-chip").forEach(c => c.classList.remove("active"));
+            chip.classList.add("active");
+
+            renderTable();
+        });
+
+        resetBtn.addEventListener("click", function() {
+            searchQuery = "";
+            searchInput.value = "";
+            activeType = "all";
+            typeFilters.querySelectorAll(".filter-chip").forEach(c => c.classList.remove("active"));
+            typeFilters.querySelector('.filter-chip[data-type="all"]').classList.add("active");
+            renderTable();
+        });
+
+        updateCounts();
+        renderTable();
+    </script>
+</body>
+</html>
