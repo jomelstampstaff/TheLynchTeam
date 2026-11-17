@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Lynch Team · Report Library · by Jomel Hernandez</title>
+<title>Jomel Hernandez · Lynch Team Report Library</title>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -32,37 +32,53 @@
 
   .main-container { max-width: 1200px; margin: 0 auto; }
 
+  /* ---------- Header ---------- */
   header { margin-bottom: 2rem; }
 
   .brand-row {
     display: flex;
     align-items: center;
-    gap: 0.75rem;
-    margin-bottom: 1.25rem;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    padding: 0.85rem 1.1rem;
+    background: #ffffff;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    box-shadow: 0 2px 6px rgba(0, 20, 40, 0.03);
   }
 
-  .brand-mark {
-    width: 42px; height: 42px;
-    display: grid; place-items: center;
-    border-radius: 11px;
-    background: linear-gradient(135deg, #2f7bff, #1a4fd6);
-    color: #fff;
-    font-weight: 700;
-    font-size: 1.05rem;
-    letter-spacing: -0.04em;
-    box-shadow: 0 4px 12px rgba(47, 123, 255, 0.22);
-  }
-
-  .brand-text { line-height: 1.25; }
-  .brand-text strong { font-size: 1rem; color: var(--text-strong); letter-spacing: -0.01em; }
-  .brand-text span {
-    display: block;
-    font-size: 0.72rem;
+  .attr-side {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    font-size: 0.85rem;
     color: var(--muted);
-    text-transform: uppercase;
-    letter-spacing: 0.12em;
-    font-weight: 600;
   }
+
+  .attr-side strong { color: var(--text-strong); font-weight: 600; }
+  .attr-side a { color: #1d4ed8; text-decoration: none; font-weight: 600; }
+  .attr-side a:hover { text-decoration: underline; }
+
+  .attr-avatar {
+    width: 38px; height: 38px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--border);
+    background: #eef3fa;
+  }
+
+  .attr-logo {
+    width: 38px; height: 38px;
+    object-fit: contain;
+    border-radius: 9px;
+    background: #f7faff;
+    padding: 4px;
+    border: 1px solid var(--border);
+  }
+
+  .attr-divider { color: #b3c2d6; font-size: 0.95rem; font-weight: 500; }
 
   h1 {
     font-size: 1.9rem;
@@ -75,7 +91,6 @@
   .subhead {
     font-size: 1rem;
     color: var(--muted);
-    margin-bottom: 0;
     border-left: 4px solid var(--accent);
     padding: 0.5rem 1.5rem 0.5rem 1rem;
     background: #ffffffd0;
@@ -84,8 +99,7 @@
     box-shadow: 0 2px 6px rgba(0,0,0,0.02);
   }
 
-  .subhead strong { color: var(--text-strong); font-weight: 600; }
-
+  /* ---------- Stats strip ---------- */
   .stats-strip {
     display: flex;
     gap: 1rem;
@@ -120,6 +134,7 @@
     font-weight: 600;
   }
 
+  /* ---------- Toolbar ---------- */
   .toolbar {
     display: flex;
     flex-wrap: wrap;
@@ -184,6 +199,7 @@
     box-shadow: 0 2px 8px rgba(47, 123, 255, 0.22);
   }
 
+  /* ---------- Report list ---------- */
   .list {
     display: flex;
     flex-direction: column;
@@ -263,6 +279,7 @@
     text-align: center;
     border-top: 1px solid var(--border-strong);
     padding-top: 1.5rem;
+    line-height: 1.7;
   }
 
   footer a { color: var(--accent); text-decoration: none; font-weight: 600; }
@@ -277,6 +294,7 @@
     .stats-strip { gap: 0.5rem; }
     .stat-card { padding: 0.75rem 0.9rem; }
     .stat-card strong { font-size: 1.25rem; }
+    .brand-row { flex-direction: column; align-items: flex-start; }
   }
 </style>
 </head>
@@ -285,15 +303,20 @@
 
     <header>
       <div class="brand-row">
-        <div class="brand-mark">LY</div>
-        <div class="brand-text">
-          <strong>Lynch Team · Report Library</strong>
-          <span>Prepared by Jomel Hernandez</span>
+        <div class="attr-side">
+          <img class="attr-avatar" src="jomel.png" alt="Jomel Hernandez">
+          <span>Produced by <a href="https://www.linkedin.com/in/jomel-hernandez-79330814a/" target="_blank" rel="noopener"><strong>Jomel Hernandez</strong></a></span>
+        </div>
+        <span class="attr-divider">for</span>
+        <div class="attr-side">
+          <img class="attr-logo" src="https://files.leadconnectorhq.com/file/6aeb5379fb31f444f2263228/the-lynch-team-icon.png" alt="The Lynch Team logo">
+          <span>Prepared for <a href="https://thelynchteam.com" target="_blank" rel="noopener"><strong>The Lynch Team</strong></a></span>
         </div>
       </div>
+
       <h1>📚 Report Library</h1>
       <div class="subhead">
-        Reports prepared by <strong>Jomel Hernandez</strong> for the <strong>Lynch Team</strong> · one page · live search · newest first
+        Every output I produce for the Lynch Team · one page · live search · newest first
       </div>
     </header>
 
@@ -327,8 +350,10 @@
     <div class="empty" id="empty">No reports match your search.</div>
 
     <footer>
-      © <span id="year"></span> · Prepared by Jomel Hernandez for the Lynch Team ·
-      <a href="https://github.com/">Repository</a>
+      Produced by <a href="https://www.linkedin.com/in/jomel-hernandez-79330814a/" target="_blank" rel="noopener">Jomel Hernandez</a>
+      for <a href="https://thelynchteam.com" target="_blank" rel="noopener">The Lynch Team</a>
+      · <a href="https://github.com/">Repository</a>
+      <br>© <span id="year"></span> All rights reserved
     </footer>
 
   </div>
@@ -338,11 +363,18 @@
        ADD REPORTS HERE — one pipe-separated line per report.
        Format:
          "path/to/report.html | Category | YYYY-MM-DD | Title | Description"
+
+       Only `path` and `Title` are required.
+       Category is free text (chips are auto-generated).
+       Date is YYYY-MM-DD (newest sorts first).
+       Description is optional — leave empty but keep the trailing |
        ============================================================ */
     const reports = [
       "reports/workflow-purposes.html | Automations | 2025-01-15 | Workflow purposes & business goals | Exact workflow names grouped by folder with expandable action steps.",
+      // ← Add new reports here, one line each.
     ];
 
+    /* ----- parsing / rendering (no edits needed below) ----- */
     const parsed = reports.map(line => {
       const parts = line.split('|').map(s => s.trim());
       return {
@@ -379,6 +411,7 @@
 
     function render() {
       const q = searchEl.value.trim().toLowerCase();
+
       const filtered = parsed.filter(r => {
         const matchesTag = activeTag === 'All' || r.tag === activeTag;
         const matchesQ = !q ||
@@ -387,8 +420,10 @@
           r.desc.toLowerCase().includes(q);
         return matchesTag && matchesQ;
       });
+
       listEl.innerHTML = '';
       emptyEl.style.display = filtered.length ? 'none' : 'block';
+
       filtered.forEach(r => {
         const a = document.createElement('a');
         a.className = 'row';
@@ -412,10 +447,10 @@
       }[c]));
     }
 
-    statTotal.textContent = parsed.length;
-    statCats.textContent  = tags.length - 1;
+    statTotal.textContent  = parsed.length;
+    statCats.textContent   = tags.length - 1;
     statLatest.textContent = parsed[0]?.date || '—';
-    yearEl.textContent = new Date().getFullYear();
+    yearEl.textContent     = new Date().getFullYear();
 
     searchEl.addEventListener('input', render);
     renderFilters();
